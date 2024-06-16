@@ -27,6 +27,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             if(!CmdBinding.Bindings.Any(x => x.key == key))
             {
                 CmdBinding.KeyBind(key, ".CommandHandler " + key.ToString());
+                SyncKeys();
             }
         }
 
@@ -55,6 +56,15 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 }
             }
                 
+        }
+
+        private static void SyncKeys()
+        {
+            foreach(Player player in Player.List)
+            {
+                CharacterClassManager ccm = player.GameObject.GetComponent<CharacterClassManager>();
+                ccm.SyncServerCmdBinding();
+            }
         }
     }
 }

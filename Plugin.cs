@@ -27,19 +27,6 @@ namespace KeyBindingServiceMeow
         {
             instance = this;
 
-            KeyRegister.RegisterKey(UnityEngine.KeyCode.B, () =>
-            {
-                Log.Info("恭喜成功了！！！！！！！按下了B键");
-            });
-
-            Log.Info(CmdBinding.Bindings.Count.ToString());
-            foreach(var binding in CmdBinding.Bindings)
-            {
-                Log.Info(binding.key.ToString());
-                Log.Info(binding.command);
-                Log.Info(binding.command.StartsWith(".") || binding.command.StartsWith("/"));
-            }
-
             Exiled.Events.Handlers.Player.Verified += OnVerified;
 
             base.OnEnabled();
@@ -48,6 +35,8 @@ namespace KeyBindingServiceMeow
         public override void OnDisabled()
         {
             instance = null;
+
+            Exiled.Events.Handlers.Player.Verified -= OnVerified;
 
             base.OnDisabled();
         }
