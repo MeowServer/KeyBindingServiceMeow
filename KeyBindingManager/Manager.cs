@@ -63,7 +63,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             foreach(Player player in Player.List)
             {
                 CharacterClassManager ccm = player.GameObject.GetComponent<CharacterClassManager>();
-                ccm.SyncServerCmdBinding();
+                ccm?.SyncServerCmdBinding();
             }
         }
     }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using static CmdBinding;
 
 namespace KeyBindingServiceMeow
@@ -44,7 +45,7 @@ namespace KeyBindingServiceMeow
         public void OnVerified(VerifiedEventArgs ev)
         {
             CharacterClassManager ccm = ev.Player.GameObject.GetComponent<CharacterClassManager>();
-            ccm.SyncServerCmdBinding();
+            ccm?.SyncServerCmdBinding();
         }
     }
 
