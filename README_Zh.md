@@ -12,4 +12,4 @@ Meow服务器设计~
 1. 在config_gameplay.txt中打开enable_sync_command_binding option。
 # 文档
 这是一个对此插件使用的简单指引：
-使用KeyRegister类来解绑或绑定一个键到你插件的行为中
+ 使用KeyRegister类来解绑或绑定一个键到你插件的行为上
