@@ -1,6 +1,6 @@
 Meow服务器设计~
-[English](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README.md)
-[中文](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Zh.md)
+- [English](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README.md)
+- [中文](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Zh.md)
 # Key Binding Service Meow
 这是一个Exiled插件，允许您将自己插件的行为和玩家的按键绑定
 # 安装
