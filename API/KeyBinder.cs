@@ -21,6 +21,8 @@ namespace KeyBindingServiceMeow.API
         {
             try
             {
+                Log.Debug("Registering key " + key.ToString() + " to action " + action.Method.Name);
+
                 return KeyBindingManager.KeyBindingManager.instance.RegisterKey(key, action, 0);
             }
             catch(Exception e)
@@ -33,6 +35,8 @@ namespace KeyBindingServiceMeow.API
         {
             try
             {
+                Log.Debug("Registering key " + key.ToString() + " to action " + action.Method.Name + " with priority " + priority);
+
                 return KeyBindingManager.KeyBindingManager.instance.RegisterKey(key, action, priority);
             }
             catch (Exception e)
@@ -48,6 +52,8 @@ namespace KeyBindingServiceMeow.API
         {
             try
             {
+                Log.Debug("Unregistering key " + key.ToString() + " from action " + action.Method.Name);
+
                 KeyBindingManager.KeyBindingManager.instance.UnregisterKey(key, action);
             }
             catch (Exception e)
@@ -63,6 +69,8 @@ namespace KeyBindingServiceMeow.API
         {
             try
             {
+                Log.Debug("Unregistering key " + key.ToString() + " from action with ID " + id);
+
                 KeyBindingManager.KeyBindingManager.instance.UnregisterKey(key, id);
             }
             catch (Exception e)

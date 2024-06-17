@@ -15,7 +15,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -54,6 +54,8 @@ namespace KeyBindingServiceMeow
     {
         public static void OnVerified(VerifiedEventArgs ev)
         {
+            Log.Debug("Syncing server command binding to " + ev.Player.Nickname);
+
             CharacterClassManager ccm = ev.Player.GameObject.GetComponent<CharacterClassManager>();
             ccm?.SyncServerCmdBinding();
         }

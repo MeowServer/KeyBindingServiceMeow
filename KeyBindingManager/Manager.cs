@@ -95,13 +95,19 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         public void HandleKey(KeyCode key)
         {
+            Log.Debug("Handling Key: " + key);
+
             if (!KeyActionPair.ContainsKey(key))
+            {
+                Log.Debug("No action binded to key: " + key);
                 return;
+            }
 
             foreach (var keyAction in KeyActionPair[key])
             {
                 try
                 {
+                    Log.Debug("Invoking action: " + keyAction.action.Method.Name);
                     keyAction.action.Invoke();
                 }
                 catch (Exception ex)
@@ -113,6 +119,8 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         private static void SyncKeys()
         {
+            Log.Debug("Syncing the Keys to all players.");
+
             foreach(Player player in Player.List)
             {
                 CharacterClassManager ccm = player.GameObject.GetComponent<CharacterClassManager>();
