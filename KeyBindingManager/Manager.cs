@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using UnityEngine;
+using YamlDotNet.Core.Tokens;
 
 namespace KeyBindingServiceMeow.KeyBindingManager
 {
@@ -79,7 +80,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 Log.Debug("[KeyBindingManager][RegisterKey]Adding the key to system KeyBinding: " + key.ToString() + " binds with the command: " + command);
 
                 CmdBinding.KeyBind(key, command);
-                SyncKeys();
+                CMDBindingTool.SyncKeys();
             }
 
             return keyAction.ID;
@@ -150,11 +151,54 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             }   
         }
 
-        private static void SyncKeys()
+        
+    }
+
+    internal static class EventKeysManager
+    {
+        private static List<KeyCode> BindedKeys = new List<KeyCode>();
+
+        public static void AddKey(KeyCode key)
+        {
+            if (!BindedKeys.Contains(key))
+                BindedKeys.Add(key);
+
+            //Add the key to the system KeyBinding if it's not already added
+            if (!CmdBinding.Bindings.Any(x => x.key == key))
+            {
+                string command = ".CommandHandler " + key.ToString();
+
+                Log.Debug("[KeyBindingManager][RegisterKey]Adding the key to system KeyBinding: " + key.ToString() + " binds with the command: " + command);
+
+                CmdBinding.KeyBind(key, command);
+                CMDBindingTool.SyncKeys();
+            }
+        }
+
+        public static void AddKey(KeyCode[] keys)
+        {
+            foreach (var key in keys)
+            {
+                AddKey(key);
+            }
+        }
+
+        public static bool IsBinded(KeyCode key)
+        {
+            if (BindedKeys.Contains(key))
+                return true;
+
+            return false;
+        }
+    }
+
+    internal static class CMDBindingTool
+    {
+        public static void SyncKeys()
         {
             Log.Debug("[KeyBindingManager][SyncKeys]Syncing the Keys to all players.");
 
-            foreach(Player player in Player.List)
+            foreach (Player player in Player.List)
             {
                 CharacterClassManager ccm = player.GameObject.GetComponent<CharacterClassManager>();
                 ccm?.SyncServerCmdBinding();

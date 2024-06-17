@@ -91,5 +91,10 @@ namespace KeyBindingServiceMeow.API
                 throw new Exception($"Failed to unbind key {key}:\n {e}");
             }
         }
+
+        public static void RegisterKeyToEvent(KeyCode key)
+        {
+
+        }
     }
 }

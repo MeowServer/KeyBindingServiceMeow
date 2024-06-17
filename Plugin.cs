@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 // - Add Debug Info
 // * V1.1.0
 // - Bind keys to the specific player rather than bind keys globally.
+// * V1.2.0
+// - Add KeyBindReady event
 
 namespace KeyBindingServiceMeow
 {
@@ -22,7 +24,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(1, 1, 0);
+        public override Version Version => new Version(1, 2, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 

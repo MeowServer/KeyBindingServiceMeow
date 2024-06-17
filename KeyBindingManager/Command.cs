@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
-
+using Exiled.Events;
+using KeyBindingServiceMeow.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,30 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 return false;
             }
 
-            KeyBindingManager.Get(Player.Get(sender)).HandleKey((KeyCode)Enum.Parse(typeof(KeyCode), args[0]));
+            KeyCode keyCode = (KeyCode)Enum.Parse(typeof(KeyCode), args[0]);
+
+            //Invoke event if the key was registered in event
+            try
+            {
+                if (EventKeysManager.IsBinded(keyCode))
+                {
+                    API.Events.InvokeKeyPressed(new KeyPressedEventArg(Player.Get(sender), keyCode));
+                }
+            }
+            catch
+            {
+                Log.Error("Failed to invoke KeyPressed event for key: " + args[0]);
+            }
+
+            //Invoke the actions directly registered in KeyBindingManager
+            try
+            {
+                KeyBindingManager.Get(Player.Get(sender)).HandleKey(keyCode);
+            }
+            catch
+            {
+                Log.Error("Failed to handle key: " + args[0]);
+            }
 
             response = string.Empty;
             return true;
