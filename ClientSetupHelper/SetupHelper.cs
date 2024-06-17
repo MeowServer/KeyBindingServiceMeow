@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace KeyBindingServiceMeow.ClientSetupHelper
 {
-    public class SetupHelper
+    //Not implemented yet
+    internal class SetupHelper
     {
         public static void OnVerified(VerifiedEventArgs ev)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
