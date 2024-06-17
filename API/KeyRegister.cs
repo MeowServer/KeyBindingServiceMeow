@@ -1,10 +1,11 @@
-﻿using KeyBindingServiceMeow.KeyBindingManager;
-using PluginAPI.Core;
+﻿using PluginAPI.Core;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using UnityEngine;
 
 namespace KeyBindingServiceMeow.API
@@ -12,9 +13,9 @@ namespace KeyBindingServiceMeow.API
     public static class KeyRegister
     {
         /// <summary>
-        /// Bind a key to a command.
+        /// Bind a key to an action.
         /// </summary>
-        /// <returns>Return false if the key already existed or an internal error had occured</returns>
+        /// <returns>Return false an internal error had occured</returns>
         public static bool RegisterKey(KeyCode key, Action action)
         {
             try
@@ -30,6 +31,12 @@ namespace KeyBindingServiceMeow.API
             return true;
         }
 
+        /// <summary>
+        /// Unbind a key to an action.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="action"></param>
+        /// <returns>Return false an internal error had occured</returns>
         public static bool UnregisterKey(KeyCode key, Action action)
         {
             try

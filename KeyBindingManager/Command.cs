@@ -1,10 +1,12 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using UnityEngine;
 
 namespace KeyBindingServiceMeow.KeyBindingManager
@@ -23,6 +25,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             List<string> args = new List<string>(arguments);
+
             if (args.Count < 1)
             {
                 Log.Error("No enough arguments passed to BindingReceiverCommand.");

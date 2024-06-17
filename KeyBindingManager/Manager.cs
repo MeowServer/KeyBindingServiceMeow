@@ -1,17 +1,16 @@
 ﻿using Exiled.API.Features;
-using Exiled.API.Features.Core.Generic;
-using Org.BouncyCastle.Asn1.Mozilla;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using UnityEngine;
-using UnityEngine.Analytics;
 
 namespace KeyBindingServiceMeow.KeyBindingManager
 {
-    public class KeyBindingManager
+    internal class KeyBindingManager
     {
         public static KeyBindingManager instance = new KeyBindingManager();
 
@@ -37,6 +36,15 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 return;
 
             KeyActionPair[key].Remove(action);
+
+            if(KeyActionPair[key].Count == 0)
+            {
+                KeyActionPair.Remove(key);
+
+                CmdBinding.Bindings.RemoveAll(x => x.key == key);
+                CmdBinding.Save();
+                return;
+            }
         }
 
         internal void HandleKey(KeyCode key)
@@ -54,8 +62,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 {
                     Log.Error("An error had occured while handling the action for key: " + ex.ToString() + "\n" + ex);
                 }
-            }
-                
+            }   
         }
 
         private static void SyncKeys()

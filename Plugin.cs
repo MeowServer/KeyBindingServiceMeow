@@ -2,22 +2,19 @@
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs.Player;
-using HarmonyLib;
-using KeyBindingServiceMeow.API;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
-using static CmdBinding;
 
 namespace KeyBindingServiceMeow
 {
     public class Plugin : Plugin<Config>
     {
         public override string Name => "KeyBindingServiceMeow";
-        public override string Author => "MeowServerOwner";
+        public override string Author => "MeowServer";
         public override Version Version => new Version(1, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
@@ -26,6 +23,11 @@ namespace KeyBindingServiceMeow
 
         public override void OnEnabled()
         {
+            if(CharacterClassManager.EnableSyncServerCmdBinding == false)
+            {
+                throw new Exception("This plugin requires the server to enable enable_sync_command_binding option in config_gameplay.txt.");
+            }
+
             instance = this;
 
             Exiled.Events.Handlers.Player.Verified += OnVerified;
