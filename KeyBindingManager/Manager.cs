@@ -37,7 +37,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
             var keyAction = new KeyAction(action, priority);
             KeyActionPair[key].Add(keyAction);
-            KeyActionPair[key].Sort((x, y) => x.priority.CompareTo(y.priority));
+            KeyActionPair[key].Sort((x, y) => y.priority.CompareTo(x.priority));
 
             if (Plugin.instance.Config.Debug)
             {
