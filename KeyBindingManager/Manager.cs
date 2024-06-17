@@ -39,20 +39,24 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             KeyActionPair[key].Add(keyAction);
             KeyActionPair[key].Sort((x, y) => x.priority.CompareTo(y.priority));
 
-            if (KeyActionPair[key].Count > 1 && Plugin.instance.Config.WarnOnMultipleAction)
+            if (Plugin.instance.Config.Debug)
             {
-                Log.Warn("Multiple actions are binded to the key: " + key.ToString());
-                Log.Warn("Actions:");
+                Log.Debug("[KeyBindingManager][RegisterKey]Multiple actions are binded to the key: " + key.ToString());
+                Log.Debug("Actions:");
 
                 for (int i = 0; i < KeyActionPair[key].Count; i++)
                 {
-                    Log.Warn(i + ". " + KeyActionPair[key][i].action.Method.Name);
+                    Log.Debug(i + ". " + KeyActionPair[key][i].action.Method.Name);
                 }
             }
 
             if (!CmdBinding.Bindings.Any(x => x.key == key))
             {
-                CmdBinding.KeyBind(key, ".CommandHandler " + key.ToString());
+                string command = ".CommandHandler " + key.ToString();
+
+                Log.Debug("[KeyBindingManager][RegisterKey]Adding the key to system KeyBinding: " + key.ToString() + " binds with the command: " + command);
+
+                CmdBinding.KeyBind(key, command);
                 SyncKeys();
             }
 
@@ -95,11 +99,11 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         public void HandleKey(KeyCode key)
         {
-            Log.Debug("Handling Key: " + key);
+            Log.Debug("[KeyBindingManager][HandleKey]Handling Key: " + key);
 
             if (!KeyActionPair.ContainsKey(key))
             {
-                Log.Debug("No action binded to key: " + key);
+                Log.Debug("[KeyBindingManager][HandleKey]No action binded to key: " + key);
                 return;
             }
 
@@ -107,7 +111,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             {
                 try
                 {
-                    Log.Debug("Invoking action: " + keyAction.action.Method.Name);
+                    Log.Debug("[KeyBindingManager][HandleKey]Invoking action: " + keyAction.action.Method.Name);
                     keyAction.action.Invoke();
                 }
                 catch (Exception ex)
@@ -119,7 +123,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         private static void SyncKeys()
         {
-            Log.Debug("Syncing the Keys to all players.");
+            Log.Debug("[KeyBindingManager][SyncKeys]Syncing the Keys to all players.");
 
             foreach(Player player in Player.List)
             {

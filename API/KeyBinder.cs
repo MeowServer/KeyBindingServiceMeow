@@ -16,12 +16,14 @@ namespace KeyBindingServiceMeow.API
         /// <summary>
         /// Bind a key to an action.
         /// </summary>
-        /// <returns>Returns the ID of your action</returns>
+        /// <param name="key">The key to bind to the action</param>
+        /// <param name="action">The action to perform when player press the key</param>
+        /// <returns>The ID of your action</returns>
         public static string RegisterKey(KeyCode key, Action action)
         {
             try
             {
-                Log.Debug("Registering key " + key.ToString() + " to action " + action.Method.Name);
+                Log.Debug("[KeyBinder][RegisterKey]Registering key " + key.ToString() + " to action " + action.Method.Name);
 
                 return KeyBindingManager.KeyBindingManager.instance.RegisterKey(key, action, 0);
             }
@@ -30,12 +32,18 @@ namespace KeyBindingServiceMeow.API
                 throw new Exception($"Failed to bind key {key}:\n {e}");
             }
         }
-
+        /// <summary>
+        /// Bind a key to an action.
+        /// </summary>
+        /// <param name="key">The key to bind to the action</param>
+        /// <param name="action">The action to perform when player press the key</param>
+        /// <param name="priority">The priority of your action</param>
+        /// <returns>The ID of your action</returns>
         public static string RegisterKey(KeyCode key, Action action, int priority)
         {
             try
             {
-                Log.Debug("Registering key " + key.ToString() + " to action " + action.Method.Name + " with priority " + priority);
+                Log.Debug("[KeyBinder][RegisterKey]Registering key " + key.ToString() + " to action " + action.Method.Name + " with priority " + priority);
 
                 return KeyBindingManager.KeyBindingManager.instance.RegisterKey(key, action, priority);
             }
@@ -48,11 +56,13 @@ namespace KeyBindingServiceMeow.API
         /// <summary>
         /// Unbind a key to an action.
         /// </summary>
+        /// <param name="key">The key to unbind from the action</param>
+        /// <param name="action">The action to unbind from</param>
         public static void UnregisterKey(KeyCode key, Action action)
         {
             try
             {
-                Log.Debug("Unregistering key " + key.ToString() + " from action " + action.Method.Name);
+                Log.Debug("[KeyBinder][UnregisterKey]Unregistering key " + key.ToString() + " from action " + action.Method.Name);
 
                 KeyBindingManager.KeyBindingManager.instance.UnregisterKey(key, action);
             }
@@ -65,11 +75,13 @@ namespace KeyBindingServiceMeow.API
         /// <summary>
         /// Unbind a key to an action by ID.
         /// </summary>
+        /// <param name="key">The key to unbind from the action</param>
+        /// <param name="id">The ID of the action</param>
         public static void UnregisterKey(KeyCode key, string id)
         {
             try
             {
-                Log.Debug("Unregistering key " + key.ToString() + " from action with ID " + id);
+                Log.Debug("[KeyBinder][UnregisterKey]Unregistering key " + key.ToString() + " from action with ID " + id);
 
                 KeyBindingManager.KeyBindingManager.instance.UnregisterKey(key, id);
             }

@@ -9,6 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// * V1.0.0
+// - Initial release
+// * V1.0.1
+// - Add Debug Info
+
 namespace KeyBindingServiceMeow
 {
     public class Plugin : Plugin<Config>
