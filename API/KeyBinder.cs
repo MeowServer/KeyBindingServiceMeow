@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using KeyBindingServiceMeow.KeyBindingManager;
 using Mirror;
 
 using System;
@@ -92,9 +93,22 @@ namespace KeyBindingServiceMeow.API
             }
         }
 
+        /// <summary>
+        /// Register a key to the event. Only the keys registered to the event will passed to the event
+        /// </summary>
+        /// <param name="key">The key to register</param>
         public static void RegisterKeyToEvent(KeyCode key)
         {
+            EventKeysManager.AddKey(key);
+        }
 
+        /// <summary>
+        /// Register keys to the event. Only the keys registered to the event will passed to the event
+        /// </summary>
+        /// <param name="key">The keys to register</param>
+        public static void RegisterKeyToEvent(KeyCode[] key)
+        {
+            EventKeysManager.AddKey(key);
         }
     }
 }
