@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 // * V1.0.1
 // - Add Debug Info
 // * V1.1.0
-// - Bind key to specific player rather than bind globally.
+// - Bind keys to the specific player rather than bind keys globally.
 
 namespace KeyBindingServiceMeow
 {
