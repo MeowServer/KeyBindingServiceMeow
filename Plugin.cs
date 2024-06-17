@@ -23,14 +23,11 @@ namespace KeyBindingServiceMeow
 
         public override void OnEnabled()
         {
-            if(CharacterClassManager.EnableSyncServerCmdBinding == false)
-            {
-                throw new Exception("This plugin requires the server to enable enable_sync_command_binding option in config_gameplay.txt.");
-            }
+            CheckRequirements();
 
             instance = this;
 
-            Exiled.Events.Handlers.Player.Verified += OnVerified;
+            Exiled.Events.Handlers.Player.Verified += EventHandler.OnVerified;
 
             base.OnEnabled();
         }
@@ -39,21 +36,26 @@ namespace KeyBindingServiceMeow
         {
             instance = null;
 
-            Exiled.Events.Handlers.Player.Verified -= OnVerified;
+            Exiled.Events.Handlers.Player.Verified -= EventHandler.OnVerified;
 
             base.OnDisabled();
         }
 
-        public void OnVerified(VerifiedEventArgs ev)
+        private void CheckRequirements()
+        {
+            if (CharacterClassManager.EnableSyncServerCmdBinding == false)
+            {
+                throw new Exception("This plugin requires the server to enable enable_sync_command_binding option in config_gameplay.txt.");
+            }
+        }
+    }
+
+    internal static class EventHandler
+    {
+        public static void OnVerified(VerifiedEventArgs ev)
         {
             CharacterClassManager ccm = ev.Player.GameObject.GetComponent<CharacterClassManager>();
             ccm?.SyncServerCmdBinding();
         }
-    }
-
-    public class Config : IConfig
-    {
-        public bool IsEnabled { get; set; } = true;
-        public bool Debug { get; set; } = false;
     }
 }

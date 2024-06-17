@@ -348,7 +348,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\KeyRegister.cs" />
+    <Compile Include="API\KeyBinder.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="KeyBindingManager\Command.cs" />
     <Compile Include="KeyBindingManager\Manager.cs" />
     <Compile Include="Plugin.cs" />

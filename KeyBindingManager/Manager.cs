@@ -10,23 +10,69 @@ using UnityEngine;
 
 namespace KeyBindingServiceMeow.KeyBindingManager
 {
+    public class KeyAction
+    {
+        public string ID = Guid.NewGuid().ToString();
+        public Action action;
+
+        public int priority;
+
+        public KeyAction(Action action, int priority)
+        {
+            this.action = action;
+            this.priority = priority;
+        }
+    }
+
     internal class KeyBindingManager
     {
         public static KeyBindingManager instance = new KeyBindingManager();
 
-        private Dictionary<KeyCode, List<Action>> KeyActionPair = new Dictionary<KeyCode, List<Action>>();
+        private Dictionary<KeyCode, List<KeyAction>> KeyActionPair = new Dictionary<KeyCode, List<KeyAction>>();
 
-        public void RegisterKey(KeyCode key, Action action)
+        public string RegisterKey(KeyCode key, Action action, int priority)
         {
             if (!KeyActionPair.ContainsKey(key))
-                KeyActionPair.Add(key, new List<Action>());
+                KeyActionPair.Add(key, new List<KeyAction>());
 
-            KeyActionPair[key].Add(action);
+            var keyAction = new KeyAction(action, priority);
+            KeyActionPair[key].Add(keyAction);
+            KeyActionPair[key].Sort((x, y) => x.priority.CompareTo(y.priority));
 
-            if(!CmdBinding.Bindings.Any(x => x.key == key))
+            if (KeyActionPair[key].Count > 1 && Plugin.instance.Config.WarnOnMultipleAction)
+            {
+                Log.Warn("Multiple actions are binded to the key: " + key.ToString());
+                Log.Warn("Actions:");
+
+                for (int i = 0; i < KeyActionPair[key].Count; i++)
+                {
+                    Log.Warn(i + ". " + KeyActionPair[key][i].action.Method.Name);
+                }
+            }
+
+            if (!CmdBinding.Bindings.Any(x => x.key == key))
             {
                 CmdBinding.KeyBind(key, ".CommandHandler " + key.ToString());
                 SyncKeys();
+            }
+
+            return keyAction.ID;
+        }
+
+        public void UnregisterKey(KeyCode key, string id)
+        {
+            if (!KeyActionPair.ContainsKey(key))
+                return;
+
+            KeyActionPair[key].RemoveAll(x => x.ID == id);
+
+            if (KeyActionPair[key].Count == 0)
+            {
+                KeyActionPair.Remove(key);
+
+                CmdBinding.Bindings.RemoveAll(x => x.key == key);
+                CmdBinding.Save();
+                return;
             }
         }
 
@@ -35,7 +81,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             if (!KeyActionPair.ContainsKey(key))
                 return;
 
-            KeyActionPair[key].Remove(action);
+            KeyActionPair[key].RemoveAll(x => x.action == action);
 
             if(KeyActionPair[key].Count == 0)
             {
@@ -47,16 +93,16 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             }
         }
 
-        internal void HandleKey(KeyCode key)
+        public void HandleKey(KeyCode key)
         {
             if (!KeyActionPair.ContainsKey(key))
                 return;
 
-            foreach (var action in KeyActionPair[key])
+            foreach (var keyAction in KeyActionPair[key])
             {
                 try
                 {
-                    action.Invoke();
+                    keyAction.action.Invoke();
                 }
                 catch (Exception ex)
                 {
