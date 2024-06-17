@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 // - Initial release
 // * V1.0.1
 // - Add Debug Info
+// * V1.1.0
+// - Bind key to specific player rather than bind globally.
 
 namespace KeyBindingServiceMeow
 {
@@ -20,7 +22,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(1, 0, 1);
+        public override Version Version => new Version(1, 1, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -67,11 +69,6 @@ namespace KeyBindingServiceMeow
             ccm?.SyncServerCmdBinding();
 
             new KeyBindingManager.KeyBindingManager(ev.Player);
-
-            KeyBinder.RegisterKey(ev.Player, UnityEngine.KeyCode.Tab, () =>
-            {
-                Log.Info("Tab key pressed");
-            });
 
             Events.InvokeKeyBindReady(new KeyBindReadyEventArg(ev.Player));
         }
