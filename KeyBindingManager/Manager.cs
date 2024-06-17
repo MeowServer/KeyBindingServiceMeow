@@ -32,13 +32,16 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         public string RegisterKey(KeyCode key, Action action, int priority)
         {
+            //Initialize the key if it's not in the dictionary
             if (!KeyActionPair.ContainsKey(key))
                 KeyActionPair.Add(key, new List<KeyAction>());
 
+            //Add and sort the key action
             var keyAction = new KeyAction(action, priority);
             KeyActionPair[key].Add(keyAction);
             KeyActionPair[key].Sort((x, y) => y.priority.CompareTo(x.priority));
 
+            //Debug info
             if (Plugin.instance.Config.Debug)
             {
                 Log.Debug("[KeyBindingManager][RegisterKey]Multiple actions are binded to the key: " + key.ToString());
@@ -50,6 +53,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 }
             }
 
+            //Add the key to the system KeyBinding if it's not already added
             if (!CmdBinding.Bindings.Any(x => x.key == key))
             {
                 string command = ".CommandHandler " + key.ToString();
@@ -65,11 +69,14 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         public void UnregisterKey(KeyCode key, string id)
         {
+            //Check if the key is in the dictionary
             if (!KeyActionPair.ContainsKey(key))
                 return;
 
+            //Remove the action by ID
             KeyActionPair[key].RemoveAll(x => x.ID == id);
 
+            //If there's no action binded to the key, remove the key from the dictionary and the system KeyBinding
             if (KeyActionPair[key].Count == 0)
             {
                 KeyActionPair.Remove(key);
@@ -82,11 +89,14 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
         public void UnregisterKey(KeyCode key, Action action)
         {
+            //Check if the key is in the dictionary
             if (!KeyActionPair.ContainsKey(key))
                 return;
 
+            //Remove the action
             KeyActionPair[key].RemoveAll(x => x.action == action);
 
+            //If there's no action binded to the key, remove the key from the dictionary and the system KeyBinding
             if(KeyActionPair[key].Count == 0)
             {
                 KeyActionPair.Remove(key);
@@ -97,6 +107,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             }
         }
 
+        //Perform the actions that binded to the key
         public void HandleKey(KeyCode key)
         {
             Log.Debug("[KeyBindingManager][HandleKey]Handling Key: " + key);
