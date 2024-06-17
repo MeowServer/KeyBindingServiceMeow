@@ -26,9 +26,27 @@ namespace KeyBindingServiceMeow.KeyBindingManager
 
     internal class KeyBindingManager
     {
-        public static KeyBindingManager instance = new KeyBindingManager();
+        public Player Player { get; set; }
+
+        public static List<KeyBindingManager> List = new List<KeyBindingManager>();
 
         private Dictionary<KeyCode, List<KeyAction>> KeyActionPair = new Dictionary<KeyCode, List<KeyAction>>();
+
+        public KeyBindingManager(Player player)
+        {
+            List.Add(this);
+            Player = player;
+        }
+
+        public static void RemoveManager(Player player)
+        {
+            List.RemoveAll(x => x.Player == player);
+        }
+
+        public static KeyBindingManager Get(Player player)
+        {
+            return List.Find(x => x.Player == player);
+        }
 
         public string RegisterKey(KeyCode key, Action action, int priority)
         {

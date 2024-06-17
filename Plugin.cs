@@ -2,7 +2,7 @@
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs.Player;
-
+using KeyBindingServiceMeow.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,7 @@ namespace KeyBindingServiceMeow
             instance = this;
 
             Exiled.Events.Handlers.Player.Verified += EventHandler.OnVerified;
+            Exiled.Events.Handlers.Player.Left += EventHandler.OnLeft;
 
             base.OnEnabled();
         }
@@ -42,6 +43,7 @@ namespace KeyBindingServiceMeow
             instance = null;
 
             Exiled.Events.Handlers.Player.Verified -= EventHandler.OnVerified;
+            Exiled.Events.Handlers.Player.Left -= EventHandler.OnLeft;
 
             base.OnDisabled();
         }
@@ -63,6 +65,20 @@ namespace KeyBindingServiceMeow
 
             CharacterClassManager ccm = ev.Player.GameObject.GetComponent<CharacterClassManager>();
             ccm?.SyncServerCmdBinding();
+
+            new KeyBindingManager.KeyBindingManager(ev.Player);
+
+            KeyBinder.RegisterKey(ev.Player, UnityEngine.KeyCode.Tab, () =>
+            {
+                Log.Info("Tab key pressed");
+            });
+
+            Events.InvokeKeyBindReady(new KeyBindReadyEventArg(ev.Player));
+        }
+
+        public static void OnLeft(LeftEventArgs ev)
+        {
+            KeyBindingManager.KeyBindingManager.RemoveManager(ev.Player);
         }
     }
 }

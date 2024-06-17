@@ -41,7 +41,7 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                 return false;
             }
 
-            KeyBindingManager.instance.HandleKey((KeyCode)Enum.Parse(typeof(KeyCode), args[0]));
+            KeyBindingManager.Get(Player.Get(sender)).HandleKey((KeyCode)Enum.Parse(typeof(KeyCode), args[0]));
 
             response = string.Empty;
             return true;

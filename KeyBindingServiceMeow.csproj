@@ -348,7 +348,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Events.cs" />
     <Compile Include="API\KeyBinder.cs" />
+    <Compile Include="ClientSetupHelper\SetupHelper.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="KeyBindingManager\Command.cs" />
     <Compile Include="KeyBindingManager\Manager.cs" />
