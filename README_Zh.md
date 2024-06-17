@@ -11,5 +11,6 @@ Meow服务器设计~
 ## 服务器端:
 1. 在config_gameplay.txt中打开enable_sync_command_binding option。
 # 文档
-这是一个对此插件使用的简单指引：
- 使用KeyRegister类来解绑或绑定一个键到你插件的行为上
+这是一个使用此插件的简单指引：
+1. 使用KeyRegister.RegisterKey方法来绑定一个键到您插件的Action上
+2. 使用KeyRegister.RegisterKeyToEvent方法来注册一个或多个键，然后绑定Events.OnKeyPressed事件

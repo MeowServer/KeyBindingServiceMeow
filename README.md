@@ -12,5 +12,7 @@ This Exiled plugin allows other plugins to customize the player's key binding.
 1. Enable enable_sync_command_binding option in config_gameplay.txt
 
 # Documentary
-Here's a simple instruction to use this plugin:
-Use KeyRegister class to register/unregister your keys to your actions. 
+Here's a simple instruction to develop using this plugin:
+1. Use KeyRegister.RegisterKey method to bind your key to your action. 
+2. Use KeyRegister.RegisterKeyToEvent to register a (or multiple) key to events. And register your method to the Event.KeyPressed.
+
