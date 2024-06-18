@@ -202,7 +202,19 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             {
                 CharacterClassManager ccm = player.GameObject.GetComponent<CharacterClassManager>();
                 ccm?.SyncServerCmdBinding();
+
+                //Not sure whether we need this or not but it's here just in case
+                RefreshRA(player);
             }
+        }
+
+        //V1.3.0 fixing
+        public static void RefreshRA(Player player)
+        {
+            if (player.ReferenceHub.serverRoles.RemoteAdmin)
+                player.ReferenceHub.serverRoles.OpenRemoteAdmin();
+            else
+                player.ReferenceHub.serverRoles.TargetSetRemoteAdmin(open: false);
         }
     }
 }

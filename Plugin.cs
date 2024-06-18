@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs.Player;
 using KeyBindingServiceMeow.API;
+using KeyBindingServiceMeow.KeyBindingManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ using System.Threading.Tasks;
 // - Bind keys to the specific player rather than bind keys globally.
 // * V1.2.0
 // - Add KeyBindReady event
+// * V1.3.0
+// - Fix the issue that player has to press RA key to use key binding. Thanks for the idea from Ruemena
 
 namespace KeyBindingServiceMeow
 {
@@ -24,7 +27,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(1, 2, 0);
+        public override Version Version => new Version(1, 3, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -71,6 +74,8 @@ namespace KeyBindingServiceMeow
             ccm?.SyncServerCmdBinding();
 
             new KeyBindingManager.KeyBindingManager(ev.Player);
+
+            CMDBindingTool.RefreshRA(ev.Player);
 
             Events.InvokeKeyBindReady(new KeyBindReadyEventArg(ev.Player));
         }
