@@ -11,5 +11,21 @@ Meow服务器设计~
 1. 在config_gameplay.txt中打开enable_sync_command_binding option。
 # 文档
 这是一个使用此插件的简单指引：
-1. 使用KeyRegister.RegisterKey方法来绑定一个键到您插件的Action上
-2. 使用KeyRegister.RegisterKeyToEvent方法来注册一个或多个键，然后绑定Events.OnKeyPressed事件
+2种常用的方法
+| 方法 | 优势 | 劣势 |
+| ---- | ---- | ---- |
+| HotKey | 玩家可以知道有哪些按键被绑定，并更改按键 | 你必须创建HotKey实例并将其添加给每一个玩家 |
+| Event | 使用方式简单 | 玩家无法知晓或自定义这些按键 |
+## 例子
+1. Hot Key
+```CSharp
+var hotKey = new HotKey(KeyCode.YourKeyCode, "ID", "Name", "Descriptoin(optional)", "Category(optional)");
+hotKey.KeyPressed += YourMethod;
+HotKeyManager.Get(ev.Player).RegisterKey(key);
+```
+2. Event
+```CSharp
+API.Event.Events.RegisterKeyToEvent(KeyCode.YourKeyCode);
+API.Event.Events.KeyPressed += OnKeyPressed;
+```
+使用KeyPressed事件时，您必须先使用RegisterKeyToEvent方法登记需要使用的按键

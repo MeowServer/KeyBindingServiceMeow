@@ -2,11 +2,17 @@
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs.Player;
-using KeyBindingServiceMeow.API;
+using HarmonyLib;
+using KeyBindingServiceMeow.API.Event.EventArgs;
+using KeyBindingServiceMeow.KeyApplications.HotKeys;
+using KeyBindingServiceMeow.KeyApplications.HotKeys.Setting;
 using KeyBindingServiceMeow.KeyBindingManager;
+using KeyBindingServiceMeow.TestCase;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +26,19 @@ using System.Threading.Tasks;
 // - Add KeyBindReady event
 // * V1.3.0
 // - Fix the issue that player has to press RA key to use key binding. Thanks for the idea from Ruemena
+// * V2.0.0
+// - Remake everything......
+//                                           Simple Direction
+//========================================================================================================
+//    API: API for other plugins to use
+//
+//    KeyBindingComponents: Basic Components that directly manage, detect and handle the cmd binding
+//        KeyManager: Subject components, manager the keys in CmdBinding and notify the observers when key was pressed
+//        KeyHandler: Concrete Observer, Handle the key
+//
+//    KeyManager: Advanced Components based on KeyBindingComponents to provide more advanced features.
+//        ClientSetupHelper: Helps to setup the client side (NOT IMPLEMENTED YET)
+//        HotKeyManager: Manage the hotkeys for a player. Hotkeys are customizable keys with name, description and other information.
 
 namespace KeyBindingServiceMeow
 {
@@ -27,7 +46,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(1, 3, 0);
+        public override Version Version => new Version(2, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -42,6 +61,14 @@ namespace KeyBindingServiceMeow
             Exiled.Events.Handlers.Player.Verified += EventHandler.OnVerified;
             Exiled.Events.Handlers.Player.Left += EventHandler.OnLeft;
 
+            SettingManager.OnEnabled();
+
+            if(Config.instance.UseTestCase)
+            {
+                HotKeyTestCase.OnEnabled();
+                EventKeyTestCase.OnEnabled();
+            }   
+
             base.OnEnabled();
         }
 
@@ -51,6 +78,14 @@ namespace KeyBindingServiceMeow
 
             Exiled.Events.Handlers.Player.Verified -= EventHandler.OnVerified;
             Exiled.Events.Handlers.Player.Left -= EventHandler.OnLeft;
+
+            SettingManager.OnDisabled();
+
+            if (Config.instance.UseTestCase)
+            {
+                HotKeyTestCase.OnDisabled();
+                EventKeyTestCase.OnDisabled();
+            }
 
             base.OnDisabled();
         }
@@ -70,19 +105,18 @@ namespace KeyBindingServiceMeow
         {
             Log.Debug("Syncing server command binding to " + ev.Player.Nickname);
 
-            CharacterClassManager ccm = ev.Player.GameObject.GetComponent<CharacterClassManager>();
-            ccm?.SyncServerCmdBinding();
+            //Sync and activate CMD binding on client side
+            CmdBindingTool.SyncBinding(ev.Player);
+            CmdBindingTool.RefreshRA(ev.Player);
 
-            new KeyBindingManager.KeyBindingManager(ev.Player);
+            HotKeyManager.Create(ev.Player);
 
-            CMDBindingTool.RefreshRA(ev.Player);
-
-            Events.InvokeKeyBindReady(new KeyBindReadyEventArg(ev.Player));
+            API.Event.Events.InvokeKeyServiceReady(new KeyServiceReadyEventArg(ev.Player));
         }
 
         public static void OnLeft(LeftEventArgs ev)
         {
-            KeyBindingManager.KeyBindingManager.RemoveManager(ev.Player);
+            HotKeyManager.Destruct(ev.Player);
         }
     }
 }

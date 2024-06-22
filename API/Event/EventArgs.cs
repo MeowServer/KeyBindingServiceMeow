@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace KeyBindingServiceMeow.API
+namespace KeyBindingServiceMeow.API.Event.EventArgs
 {
-    public class KeyBindReadyEventArg
+    public class KeyServiceReadyEventArg
     {
         public Player Player;
 
-        internal KeyBindReadyEventArg(Player player)
+        internal KeyServiceReadyEventArg(Player player)
         {
             Player = player;
         }

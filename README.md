@@ -11,7 +11,22 @@ This Exiled plugin allows other plugins to customize the player's key binding.
 1. Enable enable_sync_command_binding option in config_gameplay.txt
 
 # Documentary
-Here's a simple instruction to develop using this plugin:
-1. Use KeyRegister.RegisterKey method to bind your key to your action. 
-2. Use KeyRegister.RegisterKeyToEvent to register a (or multiple) key to events. And register your method to the Event.KeyPressed.
-
+Here's a simple instruction to develop using this plugin:  
+There 2 major way to bind a key to your action:
+| Method | Advantage | Disadvantage |
+| ---- | ---- | ---- |
+| HotKey | Player can know which key the plugin is using and customize it using command | You have to create a HotKey instance and register it for every single player|
+| Event | Easy to use.  | It is not customizable and not visible for players |
+## Example
+1. Hot Key
+```CSharp
+var hotKey = new HotKey(KeyCode.YourKeyCode, "ID", "Name", "Descriptoin(optional)", "Category(optional)");
+hotKey.KeyPressed += YourMethod;
+HotKeyManager.Get(ev.Player).RegisterKey(key);
+```
+2. Event
+```CSharp
+API.Event.Events.RegisterKeyToEvent(KeyCode.YourKeyCode);
+API.Event.Events.KeyPressed += OnKeyPressed;
+```
+When using OnKeyPressed event, you must first register your key using RegisterKeyToEvent method.
