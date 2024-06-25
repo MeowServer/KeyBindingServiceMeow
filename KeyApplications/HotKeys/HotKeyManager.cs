@@ -51,7 +51,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
         {
             HotKeyManager instance = Get(player);
 
-            instance.UnregisterAllKeys();
+            instance?.UnregisterAllKeys();
 
             hotKeyManagers.Remove(instance);
 
