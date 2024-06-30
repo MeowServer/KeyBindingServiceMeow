@@ -4,13 +4,14 @@ using Exiled.Events;
 using KeyBindingServiceMeow.API;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using UnityEngine;
 
-namespace KeyBindingServiceMeow.KeyBindingManager
+namespace KeyBindingServiceMeow.BindingManager
 {
     /// <summary>
     /// This command receives the keys from client

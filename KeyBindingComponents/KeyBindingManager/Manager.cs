@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using UnityEngine;
 
-namespace KeyBindingServiceMeow.KeyBindingManager
+namespace KeyBindingServiceMeow.BindingManager
 {
 
     /// <summary>
@@ -42,11 +42,6 @@ namespace KeyBindingServiceMeow.KeyBindingManager
             }    
         }
 
-        public static bool IsKeySubscribed(KeyCode keyCode, IKeyHandler listener)
-        {
-            return keyHandlers.ContainsKey(keyCode) && keyHandlers[keyCode].Contains(listener);
-        }
-
         public static void Notify(Player player, KeyCode keyCode)
         {
             if (keyHandlers.ContainsKey(keyCode))
@@ -57,6 +52,11 @@ namespace KeyBindingServiceMeow.KeyBindingManager
                     handler.OnKeyPressed(arg);
                 }
             }
+        }
+
+        public static bool IsKeySubscribed(KeyCode keyCode, IKeyHandler listener)
+        {
+            return keyHandlers.ContainsKey(keyCode) && keyHandlers[keyCode].Contains(listener);
         }
 
         public static bool IsKeySubscribed(KeyCode keyCode)

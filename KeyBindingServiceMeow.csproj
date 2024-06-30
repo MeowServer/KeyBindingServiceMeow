@@ -71,6 +71,9 @@
     <Reference Include="Exiled.Permissions, Version=8.9.5.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\EXILED.8.9.5\lib\net48\Exiled.Permissions.dll</HintPath>
     </Reference>
+    <Reference Include="HintServiceMeow">
+      <HintPath>..\..\HintServiceMeow\HintServiceMeow\bin\Debug\HintServiceMeow.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -381,12 +384,14 @@
     <Compile Include="API\Event\Events.cs" />
     <Compile Include="API\Features\HotKey\HotKeyBinder.cs" />
     <Compile Include="API\Features\Keys\KeyBinder.cs" />
+    <Compile Include="API\Features\PlayerVerificaiton\Verification.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\IKeyHandler.cs" />
-    <Compile Include="KeyApplications\ClientSetupHelper\SetupHelper.cs" />
+    <Compile Include="KeyApplications\PlayerVerification\Verificator.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\CmdBindingTool.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\Command.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\Manager.cs" />
+    <Compile Include="KeyBindingComponents\KeyHandlers\CommandConvertKeyHandler.cs" />
     <Compile Include="KeyBindingComponents\KeyHandlers\EventKeyHandler.cs" />
     <Compile Include="KeyApplications\HotKeys\Commands.cs" />
     <Compile Include="API\Features\HotKey\HotKeySetting.cs" />
@@ -397,6 +402,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCase\EventKeyTestCase.cs" />
     <Compile Include="TestCase\HotKeyTestCase.cs" />
+    <Compile Include="TestCase\VerificationTestCase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

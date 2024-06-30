@@ -11,8 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 {
     [CommandHandler(typeof(ClientCommandHandler))]

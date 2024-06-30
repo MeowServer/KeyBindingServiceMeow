@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
-using KeyBindingServiceMeow.KeyBindingManager;
+using KeyBindingServiceMeow.BindingManager;
 using KeyBindingServiceMeow.KeyHandlers;
 using Mirror;
 

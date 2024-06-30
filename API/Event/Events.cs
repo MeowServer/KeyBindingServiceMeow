@@ -1,4 +1,5 @@
-﻿using Exiled.Events.Features;
+﻿using Exiled.API.Features;
+using Exiled.Events.Features;
 using KeyBindingServiceMeow.API.Event.EventArgs;
 
 using System;
@@ -22,7 +23,14 @@ namespace KeyBindingServiceMeow.API.Event
 
         internal static void InvokeKeyServiceReady(KeyServiceReadyEventArg ev)
         {
-            KeyServiceReady?.Invoke(ev);
+            try
+            {
+                KeyServiceReady?.Invoke(ev);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         public delegate void KeyPressedEventHandler(KeyPressedEventArg ev);
@@ -35,6 +43,30 @@ namespace KeyBindingServiceMeow.API.Event
         internal static void InvokeKeyPressed(KeyPressedEventArg ev)
         {
             KeyPressed?.Invoke(ev);
+        }
+
+        public delegate void ServiceVerifiedEventHandler(ServiceVerifiedEventArg ev);
+
+        /// <summary>
+        /// Called when the service is verified for a specific player.
+        /// </summary>
+        public static event ServiceVerifiedEventHandler ServiceVerified;
+
+        internal static void InvokeServiceVerified(ServiceVerifiedEventArg ev)
+        {
+            ServiceVerified?.Invoke(ev);
+        }
+
+        public delegate void ServiceVerificationTimeoutEventHandler(ServiceVerificationTimeoutEventArg ev);
+
+        /// <summary>
+        /// Called when the service verification is timeout for a specific player
+        /// </summary>
+        public static event ServiceVerificationTimeoutEventHandler ServiceVerificationTimeout;
+
+        internal static void InvokeServiceVerificationTimeout(ServiceVerificationTimeoutEventArg ev)
+        {
+            ServiceVerificationTimeout?.Invoke(ev);
         }
 
         /// <summary>

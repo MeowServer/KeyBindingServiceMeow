@@ -20,7 +20,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys.Setting
 
         private string baseDirectory;
 
-        public static void OnEnabled()
+        public static void Initialize()
         {
             instance = new SettingManager();
 
@@ -32,7 +32,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys.Setting
             instance.baseDirectory = directory;
         }
 
-        public static void OnDisabled()
+        public static void Destruct()
         {
             instance = null;
         }

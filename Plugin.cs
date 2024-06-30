@@ -6,7 +6,8 @@ using HarmonyLib;
 using KeyBindingServiceMeow.API.Event.EventArgs;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
 using KeyBindingServiceMeow.KeyApplications.HotKeys.Setting;
-using KeyBindingServiceMeow.KeyBindingManager;
+using KeyBindingServiceMeow.BindingManager;
+using KeyBindingServiceMeow.KeyHandlers;
 using KeyBindingServiceMeow.TestCase;
 
 using System;
@@ -15,6 +16,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
+using KeyBindingServiceMeow.ClientSetupHelper;
 
 // * V1.0.0
 // - Initial release
@@ -28,7 +31,11 @@ using System.Threading.Tasks;
 // - Fix the issue that player has to press RA key to use key binding. Thanks for the idea from Ruemena
 // * V2.0.0
 // - Remake everything......
-//                                           Simple Direction
+// * V2.1.0
+// - Add Player Verification that allow you to detect whether a player has been verified 
+// - Add Command Binding that allow you to bind a custom command to a key
+//
+//                                           Simple Direction(V2.1.0)
 //========================================================================================================
 //    API: API for other plugins to use
 //
@@ -37,7 +44,7 @@ using System.Threading.Tasks;
 //        KeyHandler: Concrete Observer, Handle the key
 //
 //    KeyManager: Advanced Components based on KeyBindingComponents to provide more advanced features.
-//        ClientSetupHelper: Helps to setup the client side (NOT IMPLEMENTED YET)
+//        PlayerVerification: Manage the verification of a player. Verify whether a player had correctly setup their client.
 //        HotKeyManager: Manage the hotkeys for a player. Hotkeys are customizable keys with name, description and other information.
 
 namespace KeyBindingServiceMeow
@@ -46,7 +53,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(2, 0, 0);
+        public override Version Version => new Version(2, 1, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -61,12 +68,18 @@ namespace KeyBindingServiceMeow
             Exiled.Events.Handlers.Player.Verified += EventHandler.OnVerified;
             Exiled.Events.Handlers.Player.Left += EventHandler.OnLeft;
 
-            SettingManager.OnEnabled();
+            //Initialize components
+            CmdBindingTool.ClearKeyBinding();
 
-            if(Config.instance.UseTestCase)
+            CommandConvertKeyHandler.Initialize(); //Key Handlers
+            EventKeyHandler.Initialize();
+            SettingManager.Initialize(); //Hotkey component
+
+            if (Config.instance.UseTestCase)
             {
                 HotKeyTestCase.OnEnabled();
                 EventKeyTestCase.OnEnabled();
+                VerificationTestCase.OnEnabled();
             }   
 
             base.OnEnabled();
@@ -79,13 +92,13 @@ namespace KeyBindingServiceMeow
             Exiled.Events.Handlers.Player.Verified -= EventHandler.OnVerified;
             Exiled.Events.Handlers.Player.Left -= EventHandler.OnLeft;
 
-            SettingManager.OnDisabled();
+            CommandConvertKeyHandler.Destruct(); //Key Handlers
+            EventKeyHandler.Destruct();
+            SettingManager.Destruct(); //Hotkey component
 
-            if (Config.instance.UseTestCase)
-            {
-                HotKeyTestCase.OnDisabled();
-                EventKeyTestCase.OnDisabled();
-            }
+            HotKeyTestCase.OnDisabled();
+            EventKeyTestCase.OnDisabled();
+            VerificationTestCase.OnDisabled();
 
             base.OnDisabled();
         }
@@ -103,20 +116,19 @@ namespace KeyBindingServiceMeow
     {
         public static void OnVerified(VerifiedEventArgs ev)
         {
-            Log.Debug("Syncing server command binding to " + ev.Player.Nickname);
-
-            //Sync and activate CMD binding on client side
-            CmdBindingTool.SyncBinding(ev.Player);
-            CmdBindingTool.RefreshRA(ev.Player);
-
             HotKeyManager.Create(ev.Player);
+            Verificator.Create(ev.Player);
 
             API.Event.Events.InvokeKeyServiceReady(new KeyServiceReadyEventArg(ev.Player));
+            
+            //Sync and activate CMD binding on client side
+            CmdBindingTool.SyncBinding(ev.Player);
         }
 
         public static void OnLeft(LeftEventArgs ev)
         {
             HotKeyManager.Destruct(ev.Player);
+            Verificator.Destruct(ev.Player);
         }
     }
 }

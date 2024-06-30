@@ -22,12 +22,22 @@ namespace KeyBindingServiceMeow.KeyHandlers
         /// <summary>
         /// Singleton instance of the EventKeyHandler
         /// </summary>
-        public static readonly EventKeyHandler instance = new EventKeyHandler();
+        public static EventKeyHandler instance;
 
         /// <summary>
         /// Contain all the keycode and it's corresponding event
         /// </summary>
         private Dictionary<KeyCode, KeyHandler> keyEvents = new Dictionary<KeyCode, KeyHandler>();
+
+        internal static void Initialize()
+        {
+            instance = new EventKeyHandler();
+        }
+
+        internal static void Destruct()
+        {
+            instance = null;
+        }
 
         /// <summary>
         /// Bind a method to a specific key
@@ -36,7 +46,7 @@ namespace KeyBindingServiceMeow.KeyHandlers
         /// <param name="bindMethod">The method to use</param>
         public void RegisterKey(KeyCode keyCode, KeyHandler bindMethod)
         {
-            KeyBindingManager.KeyBindingManager.Subscribe(keyCode, this);
+            BindingManager.KeyBindingManager.Subscribe(keyCode, this);
 
             if (keyEvents.Keys.Contains(keyCode))
             {
@@ -79,7 +89,7 @@ namespace KeyBindingServiceMeow.KeyHandlers
             if (handlers == null || handlers.GetInvocationList().Length == 0)
             {
                 keyEvents.Remove(keyCode);
-                KeyBindingManager.KeyBindingManager.Unsubscribe(keyCode, this);
+                BindingManager.KeyBindingManager.Unsubscribe(keyCode, this);
             }
             else
             {

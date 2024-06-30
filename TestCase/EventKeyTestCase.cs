@@ -38,7 +38,7 @@ namespace KeyBindingServiceMeow.TestCase
 
         private static void OnKeyPressed(KeyPressedEventArg ev)
         {
-            Log.Info("A key received by KeyBindingService. Key: " + ev.Key + " Player: " + ev.Player.Nickname);
+            Log.Info("A key received by EventKeyTestCase. Key: " + ev.Key + " Player: " + ev.Player.Nickname);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
             new HotKeyManager(player);
 
-            Log.Debug(" HotKeyManager Created for " + player.UserId);
+            Log.Debug("HotKeyManager Created for " + player.UserId);
         }
 
         public static void Destruct(Player player)
@@ -55,15 +55,12 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
             hotKeyManagers.Remove(instance);
 
-            Log.Debug(" HotKeyManager Destructed for " + player.UserId);
+            Log.Debug("HotKeyManager Destructed for " + player.UserId);
         }
 
         public static HotKeyManager Get(Player player)
         {
-            if(hotKeyManagers.Any(x => x.player == player))
-                return hotKeyManagers.First(x => x.player == player);
-
-            return null;
+             return hotKeyManagers.Find(x => x.player == player);
         }
 
         //Add Methods
@@ -166,18 +163,18 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         private void UpdateKeySetting(string id)
         {
-            IReadOnlyList<HotKeySetting> settings = SettingManager.instance.GetSettings(player.UserId);
+            var hotKey = hotKeys.Find(x => x.id == id);
 
-            foreach (var hotKey in hotKeys)
+            var setting = SettingManager.instance.GetSettings(player.UserId)
+                .FirstOrDefault(x => x.id == id);
+
+            if (hotKey == null || setting == null)
+                return;
+
+            if (hotKey.currentKey != setting.keyCode)
             {
-                if (hotKey.id != id)
-                    continue;
-
-                if (!settings.Any(x => x.id == hotKey.id && x.keyCode != hotKey.currentKey))
-                    continue;
-
                 KeyCode oldKey = hotKey.currentKey;
-                KeyCode newKey = settings.First(x => x.id == hotKey.id).keyCode;
+                KeyCode newKey = setting.keyCode;
 
                 hotKey.currentKey = newKey;
 
@@ -199,7 +196,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
             hotKeys.Clear();
         }
 
-        //Internal Listener method
+        //Listener interface implementation
         internal void OnKeyPressed(KeyPressedEventArg ev)
         {
             if (!hotKeys.Any(x => x.currentKey == ev.Key))

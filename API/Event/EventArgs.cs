@@ -29,4 +29,24 @@ namespace KeyBindingServiceMeow.API.Event.EventArgs
             Key = key;
         }
     }
+
+    public class ServiceVerifiedEventArg
+    {
+        public Player Player;
+
+        internal ServiceVerifiedEventArg(Player player)
+        {
+            Player = player;
+        }
+    }
+
+    public class ServiceVerificationTimeoutEventArg
+    {
+        public Player Player;
+
+        internal ServiceVerificationTimeoutEventArg(Player player)
+        {
+            Player = player;
+        }
+    }
 }
