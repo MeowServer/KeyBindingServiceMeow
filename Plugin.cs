@@ -32,8 +32,8 @@ using KeyBindingServiceMeow.ClientSetupHelper;
 // * V2.0.0
 // - Remake everything......
 // * V2.1.0
-// - Add Player Verification that allow you to detect whether a player has been verified 
-// - Add Command Binding that allow you to bind a custom command to a key
+// - Add Player Verification that allows you to detect whether a player has been verified.
+// - Add Command Binding that allows you to bind a custom command to a key
 //
 //                                           Simple Direction(V2.1.0)
 //========================================================================================================
