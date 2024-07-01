@@ -7,7 +7,6 @@ Meow服务器设计~
 ## 客户端：
 1. 在Steam的启动选项中添加 -allow-syncbind
 2. 在游戏中，进入服务器之前使用 ".synccmd" 指令两次，直到 "SyncServerCommandBinding has been enabled" 出现。
-3. 进入服务器后按两下RA键
 ## 服务器端:
 1. 在config_gameplay.txt中打开enable_sync_command_binding option。
 # 文档

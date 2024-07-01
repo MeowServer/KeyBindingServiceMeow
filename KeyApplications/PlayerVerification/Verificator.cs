@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs.Player;
 using KeyBindingServiceMeow.API.Event.EventArgs;
 using KeyBindingServiceMeow.API.Features.HotKey;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
+using KeyBindingServiceMeow.KeyApplications.PlayerVerification.Broadcaster;
 using KeyBindingServiceMeow.KeyHandlers;
 using MEC;
 using System;
@@ -25,10 +26,17 @@ namespace KeyBindingServiceMeow.ClientSetupHelper
 
         private KeyCode setupKey => Config.instance.SetupKey;
 
+        private IBroadcaster broadcaster;
+
         public Verificator(Player player)
         {
             this.player = player;
             this.timeCreated = DateTime.Now;
+
+            if (Config.instance.UseHintServiceMeow)
+                broadcaster = new HintServiceBroadcaster();
+            else
+                broadcaster = new InternalBroadcaster();
 
             EventKeyHandler.instance.RegisterKey(setupKey, Verify);
             BroadCast(Config.instance.MessageBeforeSetup);
@@ -106,15 +114,8 @@ namespace KeyBindingServiceMeow.ClientSetupHelper
         {
             string str = message
                 .Replace("{SetupKey}", setupKey.ToString());
-
-            if (Config.instance.UseHintServiceMeow)
-            {
-                HintServiceMeow.PlayerUI.Get(player).ShowOtherHint(str, Config.instance.MessageTime);
-            }
-            else
-            {
-                player.Broadcast(Config.instance.MessageTime, str, Broadcast.BroadcastFlags.Normal, true);
-            }
+            
+            broadcaster.Broadcast(str, player);
         }
     }
 }

@@ -34,8 +34,10 @@ using KeyBindingServiceMeow.ClientSetupHelper;
 // * V2.1.0
 // - Add Player Verification that allows you to detect whether a player has been verified.
 // - Add Command Binding that allows you to bind a custom command to a key
+// * V2.1.1
+// - Fix the issue that the plugin does not work properly when HintServieMeow is not installed
 //
-//                                           Simple Direction(V2.1.0)
+//                                           Simple Direction(V2.1.1)
 //========================================================================================================
 //    API: API for other plugins to use
 //
@@ -53,7 +55,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(2, 1, 0);
+        public override Version Version => new Version(2, 1, 1);
 
         public override PluginPriority Priority => PluginPriority.First;
 
