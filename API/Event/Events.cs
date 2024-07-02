@@ -36,7 +36,7 @@ namespace KeyBindingServiceMeow.API.Event
         public delegate void KeyPressedEventHandler(KeyPressedEventArg ev);
 
         /// <summary>
-        /// Called when a player pressed the key that is registered.
+        /// Called when a Player pressed the key that is registered.
         /// </summary>
         public static event KeyPressedEventHandler KeyPressed;
 
@@ -48,7 +48,7 @@ namespace KeyBindingServiceMeow.API.Event
         public delegate void ServiceVerifiedEventHandler(ServiceVerifiedEventArg ev);
 
         /// <summary>
-        /// Called when the service is verified for a specific player.
+        /// Called when the service is verified for a specific Player.
         /// </summary>
         public static event ServiceVerifiedEventHandler ServiceVerified;
 
@@ -60,7 +60,7 @@ namespace KeyBindingServiceMeow.API.Event
         public delegate void ServiceVerificationTimeoutEventHandler(ServiceVerificationTimeoutEventArg ev);
 
         /// <summary>
-        /// Called when the service verification is timeout for a specific player
+        /// Called when the service verification is timeout for a specific Player
         /// </summary>
         public static event ServiceVerificationTimeoutEventHandler ServiceVerificationTimeout;
 
@@ -75,7 +75,7 @@ namespace KeyBindingServiceMeow.API.Event
         /// <param name="key">The key to register</param>
         public static void RegisterKeyToEvent(KeyCode key)
         {
-            KeyHandlers.EventKeyHandler.instance.RegisterKey(key, InvokeKeyPressed);
+            KeyBindingComponents.KeyHandlers.EventKeyHandler.Instance.RegisterKey(key, InvokeKeyPressed);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace KeyBindingServiceMeow.API.Event
         /// <param name="key">The keys to register</param>
         public static void RegisterKeyToEvent(KeyCode[] key)
         {
-            KeyHandlers.EventKeyHandler.instance.RegisterKey(key, InvokeKeyPressed);
+            KeyBindingComponents.KeyHandlers.EventKeyHandler.Instance.RegisterKey(key, InvokeKeyPressed);
         }
     }
 }

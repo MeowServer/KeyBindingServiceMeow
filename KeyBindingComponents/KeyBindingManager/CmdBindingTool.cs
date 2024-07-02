@@ -1,27 +1,24 @@
 ﻿using Exiled.API.Features;
-using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
 using MEC;
-using Mirror;
-using PluginAPI.Commands;
+using UnityEngine;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
-namespace KeyBindingServiceMeow.BindingManager
+namespace KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager
 {
     internal static class CmdBindingTool
     {
-        private static List<Player> playerSyncingList = new List<Player>();
+        private static readonly HashSet<Player> SyncingPlayer = new HashSet<Player>();
 
         public static void KeyBind(KeyCode keyCode)
         {
             Log.Debug("[CmdBindingTool][KeyBind] Binding The Key: " + keyCode);
 
-            string command = ".U^ " + keyCode.ToString();
+            string command = ".U^ " + keyCode; 
             CmdBinding.KeyBind(keyCode, command);
 
             SyncBinding();
@@ -62,25 +59,25 @@ namespace KeyBindingServiceMeow.BindingManager
         {
             Log.Debug("[CmdBindingTool][SyncBinding]Syncing Key Binding For Player: " + player.Nickname);
 
-            if (playerSyncingList.Contains(player))
+            if (SyncingPlayer.Contains(player))
                 return;
 
-            playerSyncingList.Add(player);
+            SyncingPlayer.Add(player);
             Timing.CallDelayed(0.5f, () =>
             {
                 player.GameObject.GetComponent<CharacterClassManager>()?.SyncServerCmdBinding();
 
                 //Not sure whether we need this or not but it's here just in case
-                RefreshRA(player);
+                RefreshRa(player);
 
-                playerSyncingList.Remove(player);
+                SyncingPlayer.Remove(player);
             }); 
         }
 
         //V1.3.0 fixing
-        public static void RefreshRA(Player player)
+        public static void RefreshRa(Player player)
         {
-            Log.Debug("[CmdBindingTool][RefreshRA]Refreshing RA For Player: " + player.Nickname);
+            Log.Debug("[CmdBindingTool][RefreshRa]Refreshing RA For Player: " + player.Nickname);
 
             var group = player.Group;
             player.Group = null;

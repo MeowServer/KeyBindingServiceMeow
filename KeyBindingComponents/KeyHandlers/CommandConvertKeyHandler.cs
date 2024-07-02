@@ -3,7 +3,6 @@ using Exiled.API.Features;
 using HarmonyLib;
 using Hints;
 using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
-using KeyBindingServiceMeow.BindingManager;
 using PluginAPI.Commands;
 using PluginAPI.Events;
 using RemoteAdmin;
@@ -21,24 +20,24 @@ namespace KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers
 {
     internal class CommandConvertKeyHandler : IKeyHandler
     {
-        private static CommandConvertKeyHandler instance;
+        private static CommandConvertKeyHandler _instance;
 
         private CommandConvertKeyHandler()
         {
             foreach(KeyCode keyCode in Config.instance.CommandBinding.Keys)
             {
-                BindingManager.KeyBindingManager.Subscribe(keyCode, this);
+                KeyBindingManager.KeyBindingManager.Subscribe(keyCode, this);
             }
         }
 
         internal static void Initialize()
         {
-            instance = new CommandConvertKeyHandler();
+            _instance = new CommandConvertKeyHandler();
         }
 
         internal static void Destruct()
         {
-            instance = null;
+            _instance = null;
         }
 
         private void RunCommand(string rawCommandStr, Player player)
@@ -57,7 +56,7 @@ namespace KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers
 
         public void OnKeyPressed(KeyPressedArg ev)
         {
-            RunCommand(Config.instance.CommandBinding[ev.keyCode], ev.player);
+            RunCommand(Config.instance.CommandBinding[ev.KeyCode], ev.Player);
         }
     }
 }

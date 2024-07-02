@@ -6,8 +6,7 @@ using HarmonyLib;
 using KeyBindingServiceMeow.API.Event.EventArgs;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
 using KeyBindingServiceMeow.KeyApplications.HotKeys.Setting;
-using KeyBindingServiceMeow.BindingManager;
-using KeyBindingServiceMeow.KeyHandlers;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
 using KeyBindingServiceMeow.TestCase;
 
 using System;
@@ -17,25 +16,27 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
-using KeyBindingServiceMeow.ClientSetupHelper;
+using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 
 // * V1.0.0
 // - Initial release
 // * V1.0.1
 // - Add Debug Info
 // * V1.1.0
-// - Bind keys to the specific player rather than bind keys globally.
+// - Bind keys to the specific Player rather than bind keys globally.
 // * V1.2.0
 // - Add KeyBindReady event
 // * V1.3.0
-// - Fix the issue that player has to press RA key to use key binding. Thanks for the idea from Ruemena
+// - Fix the issue that Player has to press RA key to use key binding. Thanks for the idea from Ruemena
 // * V2.0.0
 // - Remake everything......
 // * V2.1.0
-// - Add Player Verification that allows you to detect whether a player has been verified.
+// - Add Player Verification that allows you to detect whether a Player has been verified.
 // - Add Command Binding that allows you to bind a custom command to a key
 // * V2.1.1
 // - Fix the issue that the plugin does not work properly when HintServieMeow is not installed
+// * V2.1.2
+// - Standardize code style
 //
 //                                           Simple Direction(V2.1.1)
 //========================================================================================================
@@ -46,8 +47,8 @@ using KeyBindingServiceMeow.ClientSetupHelper;
 //        KeyHandler: Concrete Observer, Handle the key
 //
 //    KeyManager: Advanced Components based on KeyBindingComponents to provide more advanced features.
-//        PlayerVerification: Manage the verification of a player. Verify whether a player had correctly setup their client.
-//        HotKeyManager: Manage the hotkeys for a player. Hotkeys are customizable keys with name, description and other information.
+//        PlayerVerification: Manage the verification of a Player. Verify whether a Player had correctly setup their client.
+//        HotKeyManager: Manage the hotkeys for a Player. Hotkeys are customizable keys with name, description and other information.
 
 namespace KeyBindingServiceMeow
 {
@@ -55,7 +56,8 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(2, 1, 1);
+        public override Version Version => new Version(2, 1, 2);
+        public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
 
@@ -75,7 +77,7 @@ namespace KeyBindingServiceMeow
 
             CommandConvertKeyHandler.Initialize(); //Key Handlers
             EventKeyHandler.Initialize();
-            SettingManager.Initialize(); //Hotkey component
+            SettingManager.Initialize(); //Hotkey manager component
 
             if (Config.instance.UseTestCase)
             {
@@ -96,7 +98,7 @@ namespace KeyBindingServiceMeow
 
             CommandConvertKeyHandler.Destruct(); //Key Handlers
             EventKeyHandler.Destruct();
-            SettingManager.Destruct(); //Hotkey component
+            SettingManager.Destruct(); //Hotkey manager component
 
             HotKeyTestCase.OnDisabled();
             EventKeyTestCase.OnDisabled();
@@ -105,7 +107,7 @@ namespace KeyBindingServiceMeow
             base.OnDisabled();
         }
 
-        private void CheckRequirements()
+        private static void CheckRequirements()
         {
             if (CharacterClassManager.EnableSyncServerCmdBinding == false)
             {
@@ -119,7 +121,7 @@ namespace KeyBindingServiceMeow
         public static void OnVerified(VerifiedEventArgs ev)
         {
             HotKeyManager.Create(ev.Player);
-            Verificator.Create(ev.Player);
+            Verifier.Create(ev.Player);
 
             API.Event.Events.InvokeKeyServiceReady(new KeyServiceReadyEventArg(ev.Player));
             
@@ -130,7 +132,7 @@ namespace KeyBindingServiceMeow
         public static void OnLeft(LeftEventArgs ev)
         {
             HotKeyManager.Destruct(ev.Player);
-            Verificator.Destruct(ev.Player);
+            Verifier.Destruct(ev.Player);
         }
     }
 }

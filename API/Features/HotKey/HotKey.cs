@@ -92,7 +92,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         public HotKey hotkey;
 
         /// <summary>
-        /// The player who pressed the hotkey
+        /// The Player who pressed the hotkey
         /// </summary>
         public Player player;
 

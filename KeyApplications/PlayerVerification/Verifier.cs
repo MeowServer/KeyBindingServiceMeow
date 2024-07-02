@@ -4,7 +4,7 @@ using KeyBindingServiceMeow.API.Event.EventArgs;
 using KeyBindingServiceMeow.API.Features.HotKey;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
 using KeyBindingServiceMeow.KeyApplications.PlayerVerification.Broadcaster;
-using KeyBindingServiceMeow.KeyHandlers;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
 using MEC;
 using System;
 using System.Collections.Generic;
@@ -13,38 +13,38 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace KeyBindingServiceMeow.ClientSetupHelper
+namespace KeyBindingServiceMeow.KeyApplications.PlayerVerification
 {
     //Not implemented yet
-    internal class Verificator
+    internal class Verifier
     {
-        private static List<Verificator> setupHelpers = new List<Verificator>();
+        private static readonly List<Verifier> SetupHelpers = new List<Verifier>();
 
-        private Player player;
-        private bool isSetup = false;
-        private DateTime timeCreated;
+        private readonly Player _player;
+        private bool _isSetup = false;
+        private readonly DateTime _timeCreated;
 
-        private KeyCode setupKey => Config.instance.SetupKey;
+        private KeyCode SetupKey => Config.instance.SetupKey;
 
-        private IBroadcaster broadcaster;
+        private readonly IBroadcaster _broadcaster;
 
-        public Verificator(Player player)
+        public Verifier(Player player)
         {
-            this.player = player;
-            this.timeCreated = DateTime.Now;
+            this._player = player;
+            this._timeCreated = DateTime.Now;
 
             if (Config.instance.UseHintServiceMeow)
-                broadcaster = new HintServiceBroadcaster();
+                _broadcaster = new HintServiceBroadcaster();
             else
-                broadcaster = new InternalBroadcaster();
+                _broadcaster = new InternalBroadcaster();
 
-            EventKeyHandler.instance.RegisterKey(setupKey, Verify);
+            EventKeyHandler.Instance.RegisterKey(SetupKey, Verify);
             BroadCast(Config.instance.MessageBeforeSetup);
 
             if(Config.instance.TimeOut == -1)
                 Timing.CallDelayed((float)Config.instance.TimeOut + 0.05f, CheckTimeOut);
 
-            setupHelpers.Add(this);
+            SetupHelpers.Add(this);
         }
 
         public static void Create(Player player)
@@ -52,70 +52,70 @@ namespace KeyBindingServiceMeow.ClientSetupHelper
             if (!Config.instance.UsePlayerVerification)
                 return;
 
-            if (setupHelpers.Any(x => x.player == player))
+            if (SetupHelpers.Any(x => x._player == player))
                 throw new Exception("A setup helper is already created for " + player.UserId);
 
-            new Verificator(player);
+            new Verifier(player);
 
             Log.Debug("SetupHelper Created for " + player.UserId);
         }
 
         public static void Destruct(Player player)
         {
-            Verificator instance = Get(player);
+            Verifier instance = Get(player);
 
-            setupHelpers.Remove(instance);
+            SetupHelpers.Remove(instance);
 
             Log.Debug("SetupHelper Destructed for " + player.UserId);
         }
 
         public static bool IsSetup(Player player)
         {
-            return Get(player).isSetup;
+            return Get(player)._isSetup;
         }
 
         public static bool IsTimeout(Player player)
         {
             var helper = Get(player);
 
-            if (helper.isSetup)
+            if (helper._isSetup)
                 return false;
 
-            return Get(player).timeCreated + TimeSpan.FromSeconds(Config.instance.TimeOut) > DateTime.Now;
+            return Get(player)._timeCreated + TimeSpan.FromSeconds(Config.instance.TimeOut) > DateTime.Now;
         }
 
-        public static Verificator Get(Player player)
+        public static Verifier Get(Player player)
         {
-            return setupHelpers.Find(x => x.player == player);
+            return SetupHelpers.Find(x => x._player == player);
         }
 
         public void Verify(KeyPressedEventArg ev)
         {
-            EventKeyHandler.instance.UnregisterKey(setupKey, Verify);
+            EventKeyHandler.Instance.UnregisterKey(SetupKey, Verify);
 
-            this.isSetup = true;
+            this._isSetup = true;
             BroadCast(Config.instance.MessageAfterSetup);
 
-            API.Event.Events.InvokeServiceVerified(new ServiceVerifiedEventArg(this.player));
+            API.Event.Events.InvokeServiceVerified(new ServiceVerifiedEventArg(this._player));
         }
 
         private void CheckTimeOut()
         {
-            if (isSetup)
+            if (_isSetup)
                 return;
 
             BroadCast(Config.instance.ScreenMessageWhenTimeOut);
-            player.SendConsoleMessage(Config.instance.ConsoleMessageWhenTimeOut, "green");
+            _player.SendConsoleMessage(Config.instance.ConsoleMessageWhenTimeOut, "green");
 
-            API.Event.Events.InvokeServiceVerificationTimeout(new ServiceVerificationTimeoutEventArg(this.player));
+            API.Event.Events.InvokeServiceVerificationTimeout(new ServiceVerificationTimeoutEventArg(this._player));
         }
 
         private void BroadCast(string message)
         {
             string str = message
-                .Replace("{SetupKey}", setupKey.ToString());
+                .Replace("{SetupKey}", SetupKey.ToString());
             
-            broadcaster.Broadcast(str, player);
+            _broadcaster.Broadcast(str, _player);
         }
     }
 }

@@ -1,45 +1,41 @@
 ﻿using Exiled.API.Features;
-using Exiled.Loader;
-using KeyBindingServiceMeow.KeyHandlers;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
 using KeyBindingServiceMeow.KeyApplications.HotKeys.Setting;
-using Org.BouncyCastle.Asn1.Mozilla;
+
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using UnityEngine;
-using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
-using KeyBindingServiceMeow.API.Features;
 using KeyBindingServiceMeow.API.Features.HotKey;
 using Utils.NonAllocLINQ;
 using KeyBindingServiceMeow.API.Event.EventArgs;
-using static UnityStandardAssets.CinematicEffects.Bloom;
 
 namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 {
     /// <summary>
-    /// This class manage all the hotkeys for a player.
+    /// This class manage all the hotkeys for a _player.
     /// </summary>
     internal class HotKeyManager
     {
-        private static List<HotKeyManager> hotKeyManagers = new List<HotKeyManager>();
+        private static readonly List<HotKeyManager> ManagerList = new List<HotKeyManager>();
 
-        private Player player;
+        private readonly Player _player;
 
-        private List<HotKey> hotKeys = new List<HotKey>();
+        private readonly List<HotKey> _hotKeys = new List<HotKey>();
 
         public HotKeyManager(Player player)
         {
-            this.player = player;
+            this._player = player;
 
-            hotKeyManagers.Add(this);
+            ManagerList.Add(this);
         }
 
         public static void Create(Player player)
         {
-            if (hotKeyManagers.Any(x => x.player == player))
+            if (ManagerList.Any(x => x._player == player))
                 throw new Exception("A hot key manager is already created for " + player.UserId);
 
             new HotKeyManager(player);
@@ -53,47 +49,47 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
             instance?.UnregisterAllKeys();
 
-            hotKeyManagers.Remove(instance);
+            ManagerList.Remove(instance);
 
             Log.Debug("HotKeyManager Destructed for " + player.UserId);
         }
 
         public static HotKeyManager Get(Player player)
         {
-             return hotKeyManagers.Find(x => x.player == player);
+             return ManagerList.Find(x => x._player == player);
         }
 
         //Add Methods
         public void RegisterKey(HotKey hotKey)
         {
-            if (hotKeys.Any(x => x.id == hotKey.id))
+            if (_hotKeys.Any(x => x.id == hotKey.id))
                 throw new Exception("A hot key with same id is already registered. Key id: " + hotKey.id);
 
-            hotKeys.Add(new HotKey(hotKey));
+            _hotKeys.Add(new HotKey(hotKey));
 
             UpdateKeySetting(hotKey);
 
-            EventKeyHandler.instance.RegisterKey(hotKey.currentKey, OnKeyPressed);
+            EventKeyHandler.Instance.RegisterKey(hotKey.currentKey, OnKeyPressed);
         }
 
         //Remove Methods
         public void UnregisterKey(HotKey hotKey)
         {
-            hotKeys.RemoveAll(x => x.id == hotKey.id);
+            _hotKeys.RemoveAll(x => x.id == hotKey.id);
 
-            if (!hotKeys.Any(x => x.currentKey == hotKey.currentKey))
-                EventKeyHandler.instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
+            if (!_hotKeys.Any(x => x.currentKey == hotKey.currentKey))
+                EventKeyHandler.Instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
         }
 
         public void UnregisterKey(string id)
         {
-            hotKeys.RemoveAll(x => x.id == id);
+            _hotKeys.RemoveAll(x => x.id == id);
         }
 
         //Update Methods
         public void SetKey(HotKeySetting setting)
         {
-            SettingManager.instance.ChangeSettings(player.UserId, setting);
+            SettingManager.Instance.ChangeSettings(_player.UserId, setting);
 
             UpdateKeySetting(setting.id);
         }
@@ -120,7 +116,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         public void ResetAllKeys()
         {
-            foreach (var hotKey in hotKeys)
+            foreach (var hotKey in _hotKeys)
             {
                 ResetKey(hotKey);
             }
@@ -129,7 +125,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
         //Search Methods
         public IReadOnlyList<HotKey> GetKeys()
         {
-            return hotKeys.AsReadOnly();
+            return _hotKeys.AsReadOnly();
         }
 
         public bool HasKey(string id)
@@ -139,18 +135,18 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         public HotKey GetKey(string id)
         {
-            return hotKeys.Find(x => x.id == id);
+            return _hotKeys.Find(x => x.id == id);
         }
 
         public bool TryGetKey(string id, out HotKey hotKey)
         {
-            return hotKeys.TryGetFirst(x => x.id == id, out hotKey);
+            return _hotKeys.TryGetFirst(x => x.id == id, out hotKey);
         }
 
         //Internal Setting Update Methods
         private void UpdateAllKeySetting()
         {
-            foreach(var hotKey in hotKeys)
+            foreach(var hotKey in _hotKeys)
             {
                 UpdateKeySetting(hotKey);
             }
@@ -163,9 +159,9 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         private void UpdateKeySetting(string id)
         {
-            var hotKey = hotKeys.Find(x => x.id == id);
+            var hotKey = _hotKeys.Find(x => x.id == id);
 
-            var setting = SettingManager.instance.GetSettings(player.UserId)
+            var setting = SettingManager.Instance.GetSettings(_player.UserId)
                 .FirstOrDefault(x => x.id == id);
 
             if (hotKey == null || setting == null)
@@ -178,31 +174,31 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
                 hotKey.currentKey = newKey;
 
-                if (!hotKeys.Any(x => x.currentKey == oldKey))
-                    EventKeyHandler.instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
+                if (!_hotKeys.Any(x => x.currentKey == oldKey))
+                    EventKeyHandler.Instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
 
-                EventKeyHandler.instance.RegisterKey(hotKey.currentKey, OnKeyPressed);
+                EventKeyHandler.Instance.RegisterKey(hotKey.currentKey, OnKeyPressed);
             }
         }
 
         //Internal Unregister Methods
         private void UnregisterAllKeys()
         {
-            foreach (var hotKey in hotKeys)
+            foreach (var hotKey in _hotKeys)
             {
-                EventKeyHandler.instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
+                EventKeyHandler.Instance.UnregisterKey(hotKey.currentKey, OnKeyPressed);
             }
 
-            hotKeys.Clear();
+            _hotKeys.Clear();
         }
 
         //Listener interface implementation
         internal void OnKeyPressed(KeyPressedEventArg ev)
         {
-            if (!hotKeys.Any(x => x.currentKey == ev.Key))
+            if (!_hotKeys.Any(x => x.currentKey == ev.Key))
                 return;
 
-            foreach (var hotKey in hotKeys)
+            foreach (var hotKey in _hotKeys)
             {
                 if (hotKey.currentKey == ev.Key)
                 {

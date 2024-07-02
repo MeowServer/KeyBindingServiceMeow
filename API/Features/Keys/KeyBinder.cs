@@ -1,5 +1,5 @@
 ﻿using KeyBindingServiceMeow.API.Event.EventArgs;
-using KeyBindingServiceMeow.KeyHandlers;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace KeyBindingServiceMeow.API.Features.Keys
         public static void BindKey(KeyCode keyCode, KeyHandler handler)
         {
             // Bind the key
-            EventKeyHandler.instance.RegisterKey(keyCode, handler);
+            EventKeyHandler.Instance.RegisterKey(keyCode, handler);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace KeyBindingServiceMeow.API.Features.Keys
         public static void BindKeys(KeyCode[] keyCode, KeyHandler handler)
         {
             // Bind the keys
-            EventKeyHandler.instance.RegisterKey(keyCode, handler);
+            EventKeyHandler.Instance.RegisterKey(keyCode, handler);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace KeyBindingServiceMeow.API.Features.Keys
         public static void UnbindKey(KeyCode keyCode, KeyHandler handler)
         {
             // Unbind the key
-            EventKeyHandler.instance.UnregisterKey(keyCode, handler);
+            EventKeyHandler.Instance.UnregisterKey(keyCode, handler);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace KeyBindingServiceMeow.API.Features.Keys
         public static void UnbindKeys(KeyCode[] keyCode, KeyHandler handler)
         {
             // Unbind the keys
-            EventKeyHandler.instance.UnregisterKey(keyCode, handler);
+            EventKeyHandler.Instance.UnregisterKey(keyCode, handler);
         }
     }
 }

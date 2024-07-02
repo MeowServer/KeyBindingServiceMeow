@@ -1,5 +1,5 @@
 ﻿using Exiled.API.Features;
-using KeyBindingServiceMeow.ClientSetupHelper;
+using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +11,25 @@ namespace KeyBindingServiceMeow.API.Features.PlayerVerification
     public static class Verification
     {
         /// <summary>
-        /// Check whether a player can use Key Binding Service
+        /// Check whether a Player can use Key Binding Service
         /// </summary>
         public static bool IsVerified(Player player)
         {
             if (!Config.instance.UsePlayerVerification)
                 throw new Exception("Player verification is disabled in the config file");
 
-            return Verificator.IsSetup(player);
+            return Verifier.IsSetup(player);
         }
 
         /// <summary>
-        /// Check whether a player is timeout for verification
+        /// Check whether a Player is timeout for verification
         /// </summary>
         public static bool IsTimeout(Player player)
         {
             if (!Config.instance.UsePlayerVerification)
                 throw new Exception("Player verification is disabled in the config file");
 
-            return Verificator.IsTimeout(player);
+            return Verifier.IsTimeout(player);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features;
+using UnityEngine;
 using KeyBindingServiceMeow.API.Event.EventArgs;
-using KeyBindingServiceMeow.API.Features.Keys;
 using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
 
 using System;
@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 using KeyHandler = KeyBindingServiceMeow.API.Features.Keys.KeyBinder.KeyHandler;
 
-namespace KeyBindingServiceMeow.KeyHandlers
+namespace KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers
 {
     /// <summary>
     /// This class gather all the keys needed for each plugin, and invoke events when the registered key is pressed
@@ -20,23 +19,23 @@ namespace KeyBindingServiceMeow.KeyHandlers
     internal class EventKeyHandler : IKeyHandler
     {
         /// <summary>
-        /// Singleton instance of the EventKeyHandler
+        /// Singleton Instance of the EventKeyHandler
         /// </summary>
-        public static EventKeyHandler instance;
+        public static EventKeyHandler Instance;
 
         /// <summary>
         /// Contain all the keycode and it's corresponding event
         /// </summary>
-        private Dictionary<KeyCode, KeyHandler> keyEvents = new Dictionary<KeyCode, KeyHandler>();
+        private readonly Dictionary<KeyCode, KeyHandler> _keyHandlers = new Dictionary<KeyCode, KeyHandler>();
 
         internal static void Initialize()
         {
-            instance = new EventKeyHandler();
+            Instance = new EventKeyHandler();
         }
 
         internal static void Destruct()
         {
-            instance = null;
+            Instance = null;
         }
 
         /// <summary>
@@ -46,18 +45,18 @@ namespace KeyBindingServiceMeow.KeyHandlers
         /// <param name="bindMethod">The method to use</param>
         public void RegisterKey(KeyCode keyCode, KeyHandler bindMethod)
         {
-            BindingManager.KeyBindingManager.Subscribe(keyCode, this);
+            KeyBindingManager.KeyBindingManager.Subscribe(keyCode, this);
 
-            if (keyEvents.Keys.Contains(keyCode))
+            if (_keyHandlers.Keys.Contains(keyCode))
             {
-                if (keyEvents[keyCode].GetInvocationList().Contains(bindMethod))
+                if (_keyHandlers[keyCode].GetInvocationList().Contains(bindMethod))
                     return;
 
-                keyEvents[keyCode] += bindMethod;
+                _keyHandlers[keyCode] += bindMethod;
             }
             else
             {
-                keyEvents.Add(keyCode, bindMethod);
+                _keyHandlers.Add(keyCode, bindMethod);
             }
         }
 
@@ -75,30 +74,30 @@ namespace KeyBindingServiceMeow.KeyHandlers
         }
 
         /// <summary>
-        /// Unnind a method to a specific key
+        /// Unbind a method to a specific key
         /// </summary>
         /// <param name="keyCode">The key to use</param>
         /// <param name="bindMethod">The method to use</param>
         public void UnregisterKey(KeyCode keyCode, KeyHandler bindMethod)
         {
-            if (!keyEvents.TryGetValue(keyCode, out KeyHandler handlers))
+            if (!_keyHandlers.TryGetValue(keyCode, out KeyHandler handlers))
                 return;
 
             handlers -= bindMethod;
 
             if (handlers == null || handlers.GetInvocationList().Length == 0)
             {
-                keyEvents.Remove(keyCode);
-                BindingManager.KeyBindingManager.Unsubscribe(keyCode, this);
+                _keyHandlers.Remove(keyCode);
+                KeyBindingManager.KeyBindingManager.Unsubscribe(keyCode, this);
             }
             else
             {
-                keyEvents[keyCode] = handlers;
+                _keyHandlers[keyCode] = handlers;
             }
         }
 
         /// <summary>
-        /// Unnind a method to specific keys
+        /// Unbind a method to specific keys
         /// </summary>
         /// <param name="keys">The keys to use</param>
         /// <param name="bindMethod">The method to use</param>
@@ -114,11 +113,11 @@ namespace KeyBindingServiceMeow.KeyHandlers
         {
             try
             {
-                keyEvents[ev.keyCode]?.Invoke(new KeyPressedEventArg(ev.player, ev.keyCode));
+                _keyHandlers[ev.KeyCode]?.Invoke(new KeyPressedEventArg(ev.Player, ev.KeyCode));
             }
             catch
             {
-                Log.Error("Failed to invoke KeyPressed event for key: " + ev.keyCode);
+                Log.Error("Failed to invoke KeyPressed event for key: " + ev.KeyCode);
             }
         }
     }

@@ -30,8 +30,8 @@ namespace KeyBindingServiceMeow.TestCase
             List<HotKey> hotKeys = new List<HotKey>()
             {
                 new HotKey(KeyCode.F1, "TestCase-PrintLog", "Print", "Print a log on the console"),
-                new HotKey(KeyCode.F2, "TestCase-KillPlayer", "Suicide", "Kill the player who pressed this hotkey", "Test Case 1"),
-                new HotKey(KeyCode.F2, "TestCase-RevivePlayer", "Revive", "Revive the player who pressed this hotkey", "Test Case 1"),
+                new HotKey(KeyCode.F2, "TestCase-KillPlayer", "Suicide", "Kill the Player who pressed this hotkey", "Test Case 1"),
+                new HotKey(KeyCode.F2, "TestCase-RevivePlayer", "Revive", "Revive the Player who pressed this hotkey", "Test Case 1"),
                 new HotKey(KeyCode.F3, "TestCase-SendMessage", "SendMessage", "Let server send a message to you", "Test Case 2")
             };
 

@@ -20,7 +20,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         public string[] Aliases { get; } = new string[] { "CHK" };
 
-        public string Description { get; } = "Change the hotkey binded to the server\n Usage: CHK [HotKeyID] [NewBindingKey]";
+        public string Description { get; } = "Change the hotkey binds to the server\n Usage: CHK [HotKeyID] [NewBindingKey]";
 
         public bool SanitizeResponse { get; } = true;
 
@@ -68,7 +68,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
 
         public string[] Aliases { get; } = new string[] { "RHK" };
 
-        public string Description { get; } = "Reset the hotkey binded to the server\n Usage: RHK [HotKeyID] or RHK all(to reset all keys)";
+        public string Description { get; } = "Reset the hotkey binds to the server\n Usage: RHK [HotKeyID] or RHK all(to reset all keys)";
 
         public bool SanitizeResponse { get; } = true;
 

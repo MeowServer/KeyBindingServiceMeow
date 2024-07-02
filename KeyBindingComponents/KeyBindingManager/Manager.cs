@@ -1,5 +1,5 @@
 ﻿using Exiled.API.Features;
-using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
+using UnityEngine;
 
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using UnityEngine;
-
-namespace KeyBindingServiceMeow.BindingManager
+namespace KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager
 {
 
     /// <summary>
@@ -35,22 +33,22 @@ namespace KeyBindingServiceMeow.BindingManager
         {
             keyHandlers[keyCode].Remove(listener);
 
-            if (keyHandlers[keyCode].Count == 0)
-            {
-                keyHandlers.Remove(keyCode);
-                CmdBindingTool.KeyUnbind(keyCode);
-            }    
+            if (keyHandlers[keyCode].Count != 0)
+                return;
+            
+            keyHandlers.Remove(keyCode);
+            CmdBindingTool.KeyUnbind(keyCode);
         }
 
         public static void Notify(Player player, KeyCode keyCode)
         {
-            if (keyHandlers.ContainsKey(keyCode))
+            if (!keyHandlers.TryGetValue(keyCode, out var handlerList))
+                return;
+
+            foreach (var handler in handlerList)
             {
-                foreach (var handler in keyHandlers[keyCode])
-                {
-                    var arg = new KeyPressedArg(player, keyCode);
-                    handler.OnKeyPressed(arg);
-                }
+                var arg = new KeyPressedArg(player, keyCode);
+                handler.OnKeyPressed(arg);
             }
         }
 

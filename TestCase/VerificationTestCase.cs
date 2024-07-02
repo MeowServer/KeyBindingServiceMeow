@@ -27,14 +27,14 @@ namespace KeyBindingServiceMeow.TestCase
 
         private static void OnServiceVerified(ServiceVerifiedEventArg ev)
         {
-            Log.Info("Service verified for player: " + ev.Player.Nickname);
+            Log.Info("Service verified for Player: " + ev.Player.Nickname);
             Log.Info("IsVerified: " + API.Features.PlayerVerification.Verification.IsVerified(ev.Player));
             Log.Info("IsTimeout: " + API.Features.PlayerVerification.Verification.IsTimeout(ev.Player));
         }
 
         private static void OnServiceVerificationTimeout(ServiceVerificationTimeoutEventArg ev)
         {
-            Log.Info("Service verification timeout for player: " + ev.Player.Nickname);
+            Log.Info("Service verification timeout for Player: " + ev.Player.Nickname);
             Log.Info("IsVerified: " + API.Features.PlayerVerification.Verification.IsVerified(ev.Player));
             Log.Info("IsTimeout: " + API.Features.PlayerVerification.Verification.IsTimeout(ev.Player));
         }

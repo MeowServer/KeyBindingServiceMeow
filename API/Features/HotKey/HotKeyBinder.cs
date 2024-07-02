@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using KeyBindingServiceMeow.KeyApplications.HotKeys;
-using KeyBindingServiceMeow.BindingManager;
-using KeyBindingServiceMeow.KeyHandlers;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager;
+using KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers;
 using Mirror;
 
 using System;
@@ -17,7 +17,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
     public static class HotKeyBinder
     {
         /// <summary>
-        /// Add a hot key to the player
+        /// Add a hot key to the Player
         /// </summary>
         /// <param name="player"></param>
         /// <param name="hotKey"></param>
@@ -27,7 +27,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         }
 
         /// <summary>
-        /// Add hot keys to the player
+        /// Add hot keys to the Player
         /// </summary>
         /// <param name="player"></param>
         /// <param name="hotKeys"></param>
@@ -40,7 +40,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         }
 
         /// <summary>
-        /// Remove a hot key from a player
+        /// Remove a hot key from a Player
         /// </summary>
         /// <param name="player"></param>
         /// <param name="hotKey"></param>
@@ -50,7 +50,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         }
 
         /// <summary>
-        /// Remove hot keys from a player
+        /// Remove hot keys from a Player
         /// </summary>
         /// <param name="player"></param>
         /// <param name="hotKeys"></param>
@@ -65,7 +65,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         }
 
         /// <summary>
-        /// Set a player's hot key to a specific setting
+        /// Set a Player's hot key to a specific setting
         /// </summary>
         /// <param name="player"></param>
         /// <param name="setting"></param>
@@ -75,7 +75,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         }
 
         /// <summary>
-        /// Set a player's hot keys to specific settings
+        /// Set a Player's hot keys to specific Settings
         /// </summary>
         /// <param name="player"></param>
         /// <param name="settings"></param>

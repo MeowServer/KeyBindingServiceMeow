@@ -1,23 +1,23 @@
 ﻿using Exiled.API.Features;
-using KeyBindingServiceMeow.BindingManager;
+using UnityEngine;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager
 {
     internal class KeyPressedArg
     {
-        public Player player { get; }
-        public KeyCode keyCode { get; }
+        public Player Player { get; }
+        public KeyCode KeyCode { get; }
 
         public KeyPressedArg(Player player, KeyCode keyCode)
         {
-            this.player = player;
-            this.keyCode = keyCode;
+            this.Player = player;
+            this.KeyCode = keyCode;
         }
     }
 

@@ -384,11 +384,11 @@
     <Compile Include="API\Event\Events.cs" />
     <Compile Include="API\Features\HotKey\HotKeyBinder.cs" />
     <Compile Include="API\Features\Keys\KeyBinder.cs" />
-    <Compile Include="API\Features\PlayerVerificaiton\Verification.cs" />
+    <Compile Include="API\Features\PlayerVerification\Verification.cs" />
     <Compile Include="KeyApplications\PlayerVerification\Broadcaster\Broadcasters.cs" />
     <Compile Include="KeyApplications\PlayerVerification\Broadcaster\IBroadcaster.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\IKeyHandler.cs" />
-    <Compile Include="KeyApplications\PlayerVerification\Verificator.cs" />
+    <Compile Include="KeyApplications\PlayerVerification\Verifier.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\CmdBindingTool.cs" />
     <Compile Include="KeyBindingComponents\KeyBindingManager\Command.cs" />

@@ -1,5 +1,4 @@
-﻿using Exiled.API.Features;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,58 +6,57 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
-using Org.BouncyCastle.Bcpg;
 using KeyBindingServiceMeow.API.Features.HotKey;
 
 namespace KeyBindingServiceMeow.KeyApplications.HotKeys.Setting
 {
     internal class SettingManager
     {
-        public static SettingManager instance { get; private set;}
+        public static SettingManager Instance { get; private set;}
 
-        public readonly Dictionary<string, List<HotKeySetting>> settings = new Dictionary<string, List<HotKeySetting>>();
+        public readonly Dictionary<string, List<HotKeySetting>> Settings = new Dictionary<string, List<HotKeySetting>>();
 
-        private string baseDirectory;
+        private string _baseDirectory;
 
         public static void Initialize()
         {
-            instance = new SettingManager();
+            Instance = new SettingManager();
 
             string directory = Config.instance.HotKeySettingDirectory;
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            instance.baseDirectory = directory;
+            Instance._baseDirectory = directory;
         }
 
         public static void Destruct()
         {
-            instance = null;
+            Instance = null;
         }
 
         private string GetFilePath(string userID)
         {
-            return Path.Combine(baseDirectory, $"{userID}.json");
+            return Path.Combine(_baseDirectory, $"{userID}.json");
         }
 
         private void SaveSettings(string userID)
         {
             var filePath = GetFilePath(userID);
 
-            if (!settings.ContainsKey(userID))
+            if (!Settings.ContainsKey(userID))
             {
                 LoadSettings(userID); //Initialize the setting if no setting found
             }
 
-            string json = JsonConvert.SerializeObject(settings[userID], Formatting.Indented);
+            string json = JsonConvert.SerializeObject(Settings[userID], Formatting.Indented);
             File.WriteAllText(filePath, json);
         }
 
         /// <summary>
         /// Try load the setting from the file, if no setting found, initialize the setting
         /// </summary>
-        /// <param name="userID">The user id of the player</param>
+        /// <param name="userID">The user id of the Player</param>
         /// <returns></returns>
         private List<HotKeySetting> LoadSettings(string userID)
         {
@@ -67,36 +65,36 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys.Setting
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                settings[userID] = JsonConvert.DeserializeObject<List<HotKeySetting>>(json);
+                Settings[userID] = JsonConvert.DeserializeObject<List<HotKeySetting>>(json);
             }
             else
             {
-                settings[userID] = new List<HotKeySetting>();//Initialize the setting if no setting found
+                Settings[userID] = new List<HotKeySetting>();//Initialize the setting if no setting found
                 SaveSettings(userID);
             }
 
-            return settings[userID];
+            return Settings[userID];
         }
 
         public IReadOnlyList<HotKeySetting> GetSettings(string userID)
         {
-            if (!settings.ContainsKey(userID))
+            if (!Settings.ContainsKey(userID))
             {
                 LoadSettings(userID);
             }
 
-            return settings[userID].AsReadOnly();
+            return Settings[userID].AsReadOnly();
         }
 
         public void ChangeSettings(string userID, HotKeySetting config)
         {
-            if (!settings.ContainsKey(userID))
+            if (!Settings.ContainsKey(userID))
             {
                 LoadSettings(userID);
             }
 
-            settings[userID].RemoveAll(x => x.id == config.id);
-            settings[userID].Add(config);
+            Settings[userID].RemoveAll(x => x.id == config.id);
+            Settings[userID].Add(config);
 
             SaveSettings(userID);
         }
