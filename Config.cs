@@ -17,6 +17,9 @@ namespace KeyBindingServiceMeow
             {KeyCode.F4, ".help" }
         };
 
+        [Description("If disable this function, players have to press RA key after they join the server to enable the key service")]
+        public bool UseAutoRaSync { get; set; } = true;
+
         [Description("=========================Player Verification Options=========================")]
         public bool UsePlayerVerification { get; set; } = true;
         public KeyCode SetupKey { get; set; } = KeyCode.F8;

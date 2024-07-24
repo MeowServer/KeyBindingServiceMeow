@@ -27,7 +27,7 @@ using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 // * V1.2.0
 // - Add KeyBindReady event
 // * V1.3.0
-// - Fix the issue that Player has to press RA key to use key binding. Thanks for the idea from Ruemena
+// - Fix the issue that player has to press RA key to use key binding. Thanks for the idea from Ruemena
 // * V2.0.0
 // - Remake everything......
 // * V2.1.0

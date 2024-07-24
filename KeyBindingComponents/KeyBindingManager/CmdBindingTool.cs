@@ -77,11 +77,14 @@ namespace KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager
         //V1.3.0 fixing
         public static void RefreshRa(Player player)
         {
-            Log.Debug("[CmdBindingTool][RefreshRa]Refreshing RA For Player: " + player.Nickname);
+            if (Config.instance.UseAutoRaSync)
+            {
+                Log.Debug("[CmdBindingTool][RefreshRa]Refreshing RA For Player: " + player.Nickname);
 
-            var group = player.Group;
-            player.Group = null;
-            player.Group = group;
+                var group = player.Group;
+                player.Group = null;
+                player.Group = group;
+            }
         }
     }
 }

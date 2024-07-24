@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MEC;
 
 namespace KeyBindingServiceMeow.KeyApplications.PlayerVerification.Broadcaster
 {
@@ -19,7 +20,11 @@ namespace KeyBindingServiceMeow.KeyApplications.PlayerVerification.Broadcaster
     {
         public void Broadcast(string message, Player player)
         {
-            HintServiceMeow.PlayerUI.Get(player).ShowOtherHint(message, Config.instance.MessageTime);
+            //Wait for hint service to initialize
+            Timing.CallDelayed(0.5f, () =>
+            {
+                HintServiceMeow.PlayerUI.Get(player).ShowOtherHint(message, Config.instance.MessageTime);
+            });
         }
     }
 }
