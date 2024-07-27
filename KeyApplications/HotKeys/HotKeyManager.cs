@@ -18,7 +18,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
     /// <summary>
     /// This class manage all the hotkeys for a _player.
     /// </summary>
-    internal class HotKeyManager
+    public class HotKeyManager
     {
         private static readonly List<HotKeyManager> ManagerList = new List<HotKeyManager>();
 
