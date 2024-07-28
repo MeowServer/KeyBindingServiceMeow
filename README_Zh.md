@@ -21,7 +21,7 @@ Meow服务器设计~
 ```CSharp
 var hotKey = new HotKey(KeyCode.YourKeyCode, "ID", "Name", "Descriptoin(optional)", "Category(optional)");
 hotKey.KeyPressed += YourMethod;
-HotKeyManager.Get(ev.Player).RegisterKey(key);
+API.Features.HotKey.HotKeyBinder.RegisterKey(ev.Player, hotKeys);
 ```
 2. Event
 ```CSharp
