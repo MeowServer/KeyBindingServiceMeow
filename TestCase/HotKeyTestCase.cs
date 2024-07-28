@@ -40,11 +40,7 @@ namespace KeyBindingServiceMeow.TestCase
             hotKeys[2].KeyPressed += RevivePlayer;
             hotKeys[3].KeyPressed += SendMessage;
 
-            foreach (var key in hotKeys)
-            {
-                HotKeyManager.Get(ev.Player).RegisterKey(key);
-            }
-            
+            API.Features.HotKey.HotKeyBinder.RegisterKey(ev.Player, hotKeys);
         }
 
         public static void PrintLog(HotKeyPressedEventArg ev)

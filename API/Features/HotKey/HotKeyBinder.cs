@@ -31,7 +31,7 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         /// </summary>
         /// <param name="player"></param>
         /// <param name="hotKeys"></param>
-        public static void RegisterKey(Player player, HotKey[] hotKeys)
+        public static void RegisterKey(Player player, IEnumerable<HotKey> hotKeys)
         {
             foreach (HotKey hotKey in hotKeys)
             {

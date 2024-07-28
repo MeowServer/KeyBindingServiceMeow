@@ -20,11 +20,12 @@ namespace KeyBindingServiceMeow.KeyApplications.PlayerVerification.Broadcaster
     {
         public void Broadcast(string message, Player player)
         {
+            return;//Temporarly block this function. Will be solved before next release
             //Wait for hint service to initialize
-            Timing.CallDelayed(0.5f, () =>
-            {
-                HintServiceMeow.PlayerUI.Get(player).ShowOtherHint(message, Config.instance.MessageTime);
-            });
+            //Timing.CallDelayed(0.5f, () =>
+            //{
+            //    HintServiceMeow.PlayerUI.Get(player).ShowOtherHint(message, Config.instance.MessageTime);
+            //});
         }
     }
 }
