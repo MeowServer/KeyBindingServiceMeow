@@ -45,7 +45,7 @@ namespace KeyBindingServiceMeow.KeyBindingComponents.KeyBindingManager
             if (!keyHandlers.TryGetValue(keyCode, out var handlerList))
                 return;
 
-            foreach (var handler in handlerList)
+            foreach (var handler in new List<IKeyHandler>(handlerList))
             {
                 var arg = new KeyPressedArg(player, keyCode);
                 handler.OnKeyPressed(arg);
