@@ -9,7 +9,8 @@ This Exiled plugin allows other plugins to customize the player's key binding.
 2. Use the command "synccmd" twice in the client console until "SyncServerCommandBinding has been enabled" appears on the console.
 ## Server-side:
 1. Enable enable_sync_command_binding option in config_gameplay.txt
-
+2. Put KeyBindingServiceMeow.dll under Plugins folder
+3. Put Newtonsoft.Json.dll under Plugins.dependencies folder
 # Documentary
 Here's a simple instruction to develop using this plugin:  
 There 2 major way to bind a key to your action:

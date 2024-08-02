@@ -9,6 +9,8 @@ Meow服务器设计~
 2. 在游戏中，进入服务器之前使用 "synccmd" 指令两次，直到 "SyncServerCommandBinding has been enabled" 出现。
 ## 服务器端:
 1. 在config_gameplay.txt中打开enable_sync_command_binding option。
+2. 将KeyBindingServiceMeow.dll放入Plugins文件夹
+3. 将Newtonsoft.Json.dll放入Plugins.dependencies文件夹
 # 文档
 这是一个使用此插件的简单指引：
 2种常用的方法
