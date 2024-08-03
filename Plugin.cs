@@ -39,7 +39,7 @@ using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 // - Standardize code style
 // * V2.1.3
 // - Fix the bug that causes "Collection was modified" error
-// * V1.1.3
+// * V2.1.4
 // - Fix more bugs that related to "Collection was modified" error
 //
 //                                           Simple Direction(V2.1.1)
@@ -60,7 +60,7 @@ namespace KeyBindingServiceMeow
     {
         public override string Name => "KeyBindingServiceMeow";
         public override string Author => "MeowServer";
-        public override Version Version => new Version(2, 1, 3);
+        public override Version Version => new Version(2, 1, 4);
         public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.First;
