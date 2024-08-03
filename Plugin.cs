@@ -40,7 +40,7 @@ using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 // * V2.1.3
 // - Fix the bug that causes "Collection was modified" error
 // * V2.1.4
-// - Fix more bugs that related to "Collection was modified" error
+// - Fix more bugs related to the "Collection was modified" error.
 //
 //                                           Simple Direction(V2.1.1)
 //========================================================================================================
