@@ -80,7 +80,15 @@ namespace KeyBindingServiceMeow.API.Features.HotKey
         internal void OnPressed(HotKeyPressedEventArg ev)
         {
             Log.Debug("Hot Key " + id + " Invoked for " + ev.player.Nickname + " with key " + ev.hotkey.currentKey);
-            KeyPressed?.Invoke(ev);
+            try
+            {
+                KeyPressed?.Invoke(ev);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to invoke OnPressed method for Hot Key: " + id);
+                Log.Error(ex);
+            }
         }
     }
 

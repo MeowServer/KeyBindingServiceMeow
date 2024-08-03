@@ -115,9 +115,10 @@ namespace KeyBindingServiceMeow.KeyBindingComponents.KeyHandlers
             {
                 _keyHandlers[ev.KeyCode]?.Invoke(new KeyPressedEventArg(ev.Player, ev.KeyCode));
             }
-            catch
+            catch(Exception ex)
             {
                 Log.Error("Failed to invoke KeyPressed event for key: " + ev.KeyCode);
+                Log.Error(ex);
             }
         }
     }

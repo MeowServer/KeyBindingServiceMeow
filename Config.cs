@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using Exiled.API.Features;
 
 namespace KeyBindingServiceMeow
 {
@@ -46,7 +47,7 @@ namespace KeyBindingServiceMeow
 
         [Description("==========================================================================================")]
 
-        public string HotKeySettingDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED\\Plugins\\HotKeyData");
+        public string HotKeySettingDirectory { get; set; } = Path.Combine(Paths.Plugins, "HotKeyData");
 
         internal static Config instance { get; private set; }
         public Config()

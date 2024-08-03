@@ -198,7 +198,7 @@ namespace KeyBindingServiceMeow.KeyApplications.HotKeys
             if (!_hotKeys.Any(x => x.currentKey == ev.Key))
                 return;
 
-            foreach (var hotKey in _hotKeys)
+            foreach (var hotKey in new List<HotKey>(_hotKeys))
             {
                 if (hotKey.currentKey == ev.Key)
                 {

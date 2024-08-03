@@ -38,7 +38,9 @@ using KeyBindingServiceMeow.KeyApplications.PlayerVerification;
 // * V2.1.2
 // - Standardize code style
 // * V2.1.3
-// - Fix the bug that cause collection was modified error
+// - Fix the bug that causes "Collection was modified" error
+// * V1.1.3
+// - Fix more bugs that related to "Collection was modified" error
 //
 //                                           Simple Direction(V2.1.1)
 //========================================================================================================
