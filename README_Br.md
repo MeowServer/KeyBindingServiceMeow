@@ -13,7 +13,7 @@ Esse plug-in do EXILED permite que outros plug-ins personalizem a vinculação d
 2. Ponha KeyBindingServiceMeow.dll na pasta Plugins
 3. Ponha Newtonsoft.Json.dll na pasta Plugins.dependencies
 # Documentário
-Aqui vai uma simples instrução para desenvolver usando esse plug-in: 
+Aqui vai uma simples instrução para desenvolver usando esse plug-in:  
 Há duas formas principais para vincular uma tecla à sua ação:
 | Método | Vantagem | Desvantagem |
 | ---- | ---- | ---- |
