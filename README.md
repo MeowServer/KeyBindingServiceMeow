@@ -2,7 +2,7 @@
 - [中文](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Zh.md)
 - [Português](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Br.md)
 
-[Translation Contributers](TranslationContributions.md)
+[Translation Contributers](TranslationContribution.md)
 # Key Binding Service Meow
 This Exiled plugin allows other plugins to customize the player's key binding.
 # Installation
