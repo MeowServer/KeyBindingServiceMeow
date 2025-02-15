@@ -1,3 +1,5 @@
+## This repo has been permanently archived since an official key-binding system was released. The content will no longer be updated. Thank you for your understanding!
+
 - [English](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README.md)
 - [中文](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Zh.md)
 - [Português](https://github.com/MeowServer/KeyBindingServiceMeow/blob/main/README_Br.md)
